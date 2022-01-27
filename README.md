@@ -20,3 +20,11 @@ Backend dependencies to read up on:
 5. cryptography libraries
 6. NGINX
 7. AWS ec2
+
+backend dependencies:
+winston
+agent
+express
+dotenv
+cors
+axios
