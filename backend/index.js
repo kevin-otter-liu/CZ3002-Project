@@ -10,7 +10,7 @@ mongoose.connect(process.env.MONGO_URL, () => {
   console.log("connected to mongodb");
 });
 
-//DB Schema
+//DB
 require('./models/Budget');
 
 
@@ -31,3 +31,6 @@ app.listen(server_port, (error) => {
   console.log(`app is listening at port ${server_port}`);
 });
 
+
+const budgetRouter = require("./api/Budget.js");
+app.use("/budget", budgetRouter);

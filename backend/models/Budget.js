@@ -13,14 +13,15 @@ const Budget = new mongoose.Schema({
         required: true,
     },
 	period_start_date:{
-        type : String,
+        type : Date,
         required: true,
         
     },
 	period_end_date:{
-        type : String,
+        type : Date,
         required: true,
       
     }
 })
+
 module.exports = mongoose.model('Budget',Budget)
