@@ -25,7 +25,7 @@ app.use(express.json());
 
 require('./api')(app);
 
-const server_port = process.env.SERVER_PORT || 3000;
+const server_port = process.env.SERVER_PORT || 5000;
 
 app.listen(server_port, (error) => {
   console.log(`app is listening at port ${server_port}`);
