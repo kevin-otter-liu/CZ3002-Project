@@ -1,4 +1,3 @@
-const { interfaces } = require('mocha');
 const mongoose = require('mongoose');
 const Budget = new mongoose.Schema({
     user_id:{
@@ -6,7 +5,7 @@ const Budget = new mongoose.Schema({
         required: true,
     },
 	amount:{
-        type: String,
+        type: Number,
         required: true,
     },
 	category:{
