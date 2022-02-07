@@ -1,11 +1,16 @@
 import { useRef } from 'react';
 import classes from './Login.module.css';
+import { useHistory } from 'react-router-dom';
 
 const Login = (props) => {
   const emailInput = useRef();
   const passwordInput = useRef();
 
-  const loginHandler = () => {};
+  const loginHandler = async (event) => {
+    event.preventDefault();
+
+    await props.onSignIn(emailInput.current.value, passwordInput.current.value);
+  };
   const toggleHandler = (event) => {
     props.onToggle(event);
   };
@@ -26,7 +31,7 @@ const Login = (props) => {
         <div className={classes.actions}>
           <button type='submit'>Login</button>
           <button className={classes.toggle} onClick={toggleHandler}>
-            Create Account Here
+            Sign Up Page
           </button>
         </div>
       </form>
