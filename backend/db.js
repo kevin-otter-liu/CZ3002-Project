@@ -1,11 +1,9 @@
 //db.js
-
 const mongoose = require('mongoose');
 require('dotenv').config();
 
 
 
-// local mongo
 const dbUri = `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`;
 console.log(dbUri);
 
@@ -36,7 +34,7 @@ const initDb = (callback) => {
     callback(err);
   });
   
-  //localMongo
+  ////mongo Local
   // mongoose
   //   .connect(dbUri)
 

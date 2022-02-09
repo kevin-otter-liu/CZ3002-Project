@@ -27,11 +27,32 @@ const createBudget = async (req, res, next) => {
 
 };
 
-const updateBudget = async (req, res, next) => {};
+const updateBudget = async (req, res, next) => {
+        // TODO: update budget
 
-const deleteBudget = async (req, res, next) => {};
+};
 
-const getBudget = async (req, res, next) => {};
+const deleteBudget = async (req, res, next) => {
+    // TODO: body or params?
+    const toDelete = await Budget.findByIdAndRemove(req.body._id);
+
+    if (!toDelete){
+        return res.status(404).send("The budget with the given ID was not found.");
+    }
+    else {
+        res.status(200).send(toDelete);
+    }
+};
+
+const getBudget = async (req, res, next) => {
+    //SORTED BY START DATE DESC ORDER
+    Budget
+        .find({})
+        .sort("-period_start_date")
+        .then(function (Budget) {
+            res.send(Budget);
+        });
+};
 module.exports = {
     createBudget,
     updateBudget,
