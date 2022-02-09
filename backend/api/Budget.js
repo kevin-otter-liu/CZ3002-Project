@@ -10,7 +10,8 @@ router.post("/", async (req, res) => {
   const end_date = new Date(req.body.period_end_date);
 
   const budget_data = new Budget({
-    user_id : req.body.user_id, //temporarily, would need to change to jwt
+    //temporarily, would need to change to jwt
+    user_id : req.body.user_id,
     amount : req.body.amount,
     category: req.body.category,
     period_start_date : start_date,
