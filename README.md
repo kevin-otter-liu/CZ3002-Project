@@ -16,7 +16,7 @@ Backend dependencies to read up on:
 1. mongoDB
 2. express
 3. pm2
-4. sequelize? (idk what mongoDB uses as an ORM)
+4. Mongoose ODM
 5. cryptography libraries
 6. NGINX
 7. AWS ec2
