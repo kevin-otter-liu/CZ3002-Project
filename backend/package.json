@@ -2,11 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Backend API of CZ3002 project",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "nodemon": "nodemon index",
+    "nodemon": "nodemon server",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "author": "Kevin Liu",
   "license": "ISC",

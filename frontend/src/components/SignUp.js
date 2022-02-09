@@ -5,7 +5,10 @@ const SignUp = (props) => {
   const emailInput = useRef();
   const passwordInput = useRef();
 
-  const loginHandler = () => {};
+  const SignUpHandler = async (event) => {
+    event.preventDefault();
+    await props.onSignUp(emailInput.current.value, passwordInput.current.value);
+  };
 
   const toggleHandler = (event) => {
     props.onToggle(event);
@@ -13,7 +16,7 @@ const SignUp = (props) => {
 
   return (
     <div>
-      <form className={classes.signUp} onSubmit={loginHandler}>
+      <form className={classes.signUp} onSubmit={SignUpHandler}>
         <div className={classes.control}>
           <label htmlFor='email'>Email</label>
           <input type='email' ref={emailInput} id='email' required></input>
@@ -27,7 +30,7 @@ const SignUp = (props) => {
         <div className={classes.actions}>
           <button type='submit'>Create Account</button>
           <button onClick={toggleHandler} className={classes.toggle}>
-            Login here
+            Login Page
           </button>
         </div>
       </form>
