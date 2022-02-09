@@ -1,9 +1,11 @@
 //db.js
 
+const mongoose = require('mongoose');
 require('dotenv').config();
 
-const mongoose = require('mongoose');
 
+
+// local mongo
 const dbUri = `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`;
 console.log(dbUri);
 
@@ -19,23 +21,39 @@ const initDb = (callback) => {
   }
 
   // else connect to db
+
+  //mongoATLAS
   mongoose
-    .connect(dbUri)
-
+    .connect(process.env.MONGO_URL) 
     .then(() => {
-      _db = mongoose.connection.db;
+    console.log("connected to mongodb");
+    require('./models/Budget');
+    return callback(null, _db);
+  }).catch((err) => {
+    // returns error to function calling it
+    // whoever implments the callback function should implement it in a way that
+    // that accepts this interface
+    callback(err);
+  });
+  
+  //localMongo
+  // mongoose
+  //   .connect(dbUri)
 
-      //instantiate DB Schema
-      require('./models/Budget');
-      console.log('mongoDB connected');
-      return callback(null, _db);
-    })
-    .catch((err) => {
-      // returns error to function calling it
-      // whoever implments the callback function should implement it in a way that
-      // that accepts this interface
-      callback(err);
-    });
+  //   .then(() => {
+  //     _db = mongoose.connection.db;
+
+  //     //instantiate DB Schema
+  //     require('./models/Budget');
+  //     console.log('mongoDB connected');
+  //     return callback(null, _db);
+  //   })
+  //   .catch((err) => {
+  //     // returns error to function calling it
+  //     // whoever implments the callback function should implement it in a way that
+  //     // that accepts this interface
+  //     callback(err);
+  //   });
 };
 
 // function for getting database
