@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
 const Budget = new mongoose.Schema({
     user_id:{
         type: String,
         required: true,
     },
 	amount:{
-        type: Number,
+        type: Schema.Types.Decimal128,
         required: true,
     },
 	category:{
