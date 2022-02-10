@@ -6,10 +6,11 @@ const createTransaction = async (req, res, next) => {
 
   //   const TransactionDate = new Date().now();
 
+  let transactionDate = new Date();
   // create new transaction
   const createdTransaction = new Transaction({
     ...req.body,
-    // date_of_transaction: TransactionDate,
+    date_of_transaction: transactionDate,
   });
 
   // save new transaction to database
