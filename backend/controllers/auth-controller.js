@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { v4: uuid } = require('uuid');
 const User = require('../models/User');
+const HttpError = require('../libs/http-error');
 require('dotenv').config();
 
 const signIn = async (req, res, next) => {
@@ -14,20 +15,21 @@ const signIn = async (req, res, next) => {
   let user;
   try {
     user = await User.findOne({ email: email });
-    console.log(JSON.stringify(user));
+    if (!user) {
+      let error = new HttpError(404, 'user_not_found');
+      return next(error);
+    }
   } catch (error) {
-    console.log(error);
-  }
-
-  if (!user) {
-    res.status(404).send({ message: `user_not_found` });
+    // server error 500
+    return next(error);
   }
 
   // compare incoming password with password in db
   let authenticated = await bcrypt.compare(password, user.password);
 
   if (!authenticated) {
-    res.status(422).send({ message: `invalid_password` });
+    let error = new HttpError(422, 'invalid_password');
+    return next(error);
   }
   //generate jwt token
   let token = jwt.sign({ user_key: user.user_key }, SERVER_SECRET, {
@@ -47,9 +49,8 @@ const signIn = async (req, res, next) => {
       .status(200)
       .send({ email, user_key: user.user_key, token, expires_in: 3600 });
   } catch (error) {
-    console.log(error);
+    return next(error);
   }
-  next();
 };
 
 // Sign Up API
@@ -61,29 +62,35 @@ const signUp = async (req, res, next) => {
   //TODO: validate email fulfils the email standards
 
   //TODO: validate email not in db
+  let user = await User.findOne({ email: email });
+
+  if (user) {
+    let error = new HttpError(423, 'email_in_use');
+    return next(error);
+  }
 
   // encrypt passwordInput with 12 rounds of salt
-  let hashed_password;
   let SERVER_SECRET = process.env.SERVER_AUTH_SECRET;
+  let hashed_password;
 
   try {
     hashed_password = await bcrypt.hash(password, 12);
   } catch (error) {
-    console.log(error);
-    next();
+    // return means stop executing this function
+    // next() means execute next middlewware
+    // if we dont write return ere, next middleware will execute concurrently and the function will still continue
+    return next(error);
   }
-
-  //create user in database
 
   // date of token expiry : 1hr from now
   currentTime = new Date();
   let expireDate = currentTime.setSeconds(currentTime.getSeconds() + 3600);
   let userKey = `user-` + uuid();
-  console.log(userKey);
+
   // create jwt token
   let token = jwt.sign(
     {
-      user_id: userKey,
+      user_key: userKey,
     },
     SERVER_SECRET,
     { expiresIn: '1hr' }
@@ -106,11 +113,8 @@ const signUp = async (req, res, next) => {
     await createdUser.save();
     res.status(200).send({ email, user_key: userKey, token, expires_in: 3600 });
   } catch (error) {
-    console.log(error);
-    res.status(404).send('not found');
+    return next();
   }
-
-  return next();
 };
 
 module.exports = {
