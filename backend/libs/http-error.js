@@ -1,7 +1,16 @@
 class HttpError extends Error {
-  constructor(message, code) {
+  constructor(status_code, message) {
     super(message);
-    this.code = code;
+    this.status_code = status_code;
+    this.error_type;
+
+    if (typeof message === 'string') {
+      this.error_type = 'string';
+    }
+
+    if (Array.isArray(message)) {
+      this.error_type = 'array';
+    }
   }
 }
 

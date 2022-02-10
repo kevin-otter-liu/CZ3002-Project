@@ -28,6 +28,23 @@ app.use(checkAuth);
 
 app.use('/api/v1/transaction', transactionApis);
 
+// check for http errors to be passed
+app.use((error, req, res, next) => {
+  if (res.headerSent) {
+    return next(error);
+  }
+
+  if (error.error_type === 'string') {
+    res
+      .status(error.status_code || 500)
+      .json({ message: error.message } || 'unknown_error');
+  }
+
+  if (error.error_type === 'array') {
+    res.status(error.status_code || 500).json(error.message || 'unknown_error');
+  }
+});
+
 // initialise db, if db error dont start
 const SERVER_PORT = process.env.SERVER_PORT || 5000;
 db.initDb((err, db) => {

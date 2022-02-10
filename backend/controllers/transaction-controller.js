@@ -1,9 +1,10 @@
 const Transaction = require('../models/Transaction');
+const User = require('../models/User');
+const HttpError = require('../libs/http-error');
 const { v4: uuid } = require('uuid');
-const createTransaction = async (req, res, next) => {
-  // TODO: implement validations
 
-  let { user } = req.user;
+const createTransaction = async (req, res, next) => {
+  // TODO: implement validations for
 
   let { description, type, category, amount, currency } = req.body;
   let transactionDate = new Date();
