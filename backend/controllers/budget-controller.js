@@ -29,7 +29,6 @@ const createBudget = async (req, res, next) => {
 
 const updateBudget = async (req, res, next) => {
         // TODO: update budget
-
 };
 
 const deleteBudget = async (req, res, next) => {
