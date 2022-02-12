@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // importing diff api routes
 const authApis = require('./routes/auth-routes');
 const transactionApis = require('./routes/transaction-routes');
+const budgetApis = require('./routes/budget-routes');
 
 //registering routes
 app.use('/api/v1/auth', authApis);
@@ -27,6 +28,7 @@ app.use('/api/v1/auth', authApis);
 app.use(checkAuth);
 
 app.use('/api/v1/transaction', transactionApis);
+app.use('/api/v1/budget', budgetApis);
 
 // check for http errors to be passed
 app.use((error, req, res, next) => {
