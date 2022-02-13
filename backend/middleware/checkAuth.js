@@ -32,5 +32,5 @@ module.exports = async (req, res, next) => {
   }
   // get user and append to req body to pass thru middleware
   req.user = user;
-  return next();
+  next();
 };

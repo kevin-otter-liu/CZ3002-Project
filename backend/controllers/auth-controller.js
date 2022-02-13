@@ -4,15 +4,22 @@ const jwt = require('jsonwebtoken');
 const { v4: uuid } = require('uuid');
 const User = require('../models/User');
 const HttpError = require('../libs/http-error');
+const loginValidate = require('../validationSchema/login-schema');
+const signupValidate = require('../validationSchema/signup-schema');
 require('dotenv').config();
 
 const signIn = async (req, res, next) => {
-  let { email, password } = req.body;
+  let [p_errs, params] = loginValidate(req.body);
+
+  if (p_errs.length > 0) {
+    return next(new HttpError(422, p_errs));
+  }
   let SERVER_SECRET = process.env.SERVER_AUTH_SECRET;
   // TODO: validations
 
   // check if user is in database with email
   let user;
+  let { email, password } = params;
   try {
     user = await User.findOne({ email: email });
     if (!user) {
@@ -55,10 +62,14 @@ const signIn = async (req, res, next) => {
 
 // Sign Up API
 const signUp = async (req, res, next) => {
-  let { email, password } = req.body;
-
   //TODO: validate password fulfils the password standards
+  let [p_errs, params] = signupValidate(req.body);
 
+  if (p_errs.length > 0) {
+    return next(new HttpError(422, p_errs));
+  }
+
+  let { email, password } = params;
   //TODO: validate email fulfils the email standards
 
   //TODO: validate email not in db
