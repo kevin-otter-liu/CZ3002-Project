@@ -1,4 +1,8 @@
 const Budget = require('../models/Budget');
+const {
+  v4: uuid
+} = require('uuid');
+const e = require('cors');
 
 const createBudget = async (req, res, next) => {
   console.log(req.body);
@@ -9,52 +13,88 @@ const createBudget = async (req, res, next) => {
   } else {
 
     const budget_data = new Budget({
-        user_id : req.body.user_id,//temporarily, would need to change to jwt
-        amount : req.body.amount,
-        category: req.body.category,
-        period_start_date : start_date,
-        period_end_date : end_date
-      });
-    
-      try {
-        await budget_data.save();
-            res.status(200).send(req.body);
-        } catch (error) {
-        console.log(`Couldnt create budget with error: ${error}`);
-        next(error);
-      }
-  }
+      user_id: req.user._id,
+      budget_key: `BG-` + uuid(),
+      amount: req.body.amount,
+      category: req.body.category,
+      period_start_date: start_date,
+      period_end_date: end_date
+    });
 
+    await budget_data.save((err, data) => {
+      console.log("analyzing data...");
+      if (data) {
+        console.log("your data has been successfully saved.");
+        res.status(200).json(data);
+      } else {
+        console.log("Something went wrong while saving data.");
+        console.log(err);
+        res.status(400);
+        res.send(err);
+      }
+    });
+  }
 };
 
+
+
 const updateBudget = async (req, res, next) => {
-        // TODO: update budget
+
+  let {
+    budget_key,
+    amount,
+    category,
+    period_start_date,
+    period_end_date
+  } =
+  req.body;
+
+  try {
+    let updatedBudget = await Budget.updateOne({
+        budget_key
+      }, {
+        amount,
+        category,
+        period_start_date,
+        period_end_date
+      },
+      (err, category) => {
+        if (err) {
+          res.status(400);
+          res.send(err);
+        } else {
+          res.status(200).json("Successfully updated!");
+        }
+      }
+    ).clone();
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const deleteBudget = async (req, res, next) => {
-    // TODO: body or params?
-    const toDelete = await Budget.findByIdAndRemove(req.body._id);
-
-    if (!toDelete){
-        return res.status(404).send("The budget with the given ID was not found.");
-    }
-    else {
-        res.status(200).send(toDelete);
-    }
+  try {
+    await Budget.findOneAndRemove({
+      budget_key: req.body.budget_key
+    });
+  } catch (error) {
+    console.log(error);
+  }
+  res.status(200).json("Successfully deleted!");
 };
 
 const getBudget = async (req, res, next) => {
-    //SORTED BY START DATE DESC ORDER
-    Budget
-        .find({})
-        .sort("-period_start_date")
-        .then(function (Budget) {
-            res.send(Budget);
-        });
+  //SORTED BY START DATE DESC ORDER
+  Budget
+    .find({})
+    .sort("-period_start_date")
+    .then(function (Budget) {
+      res.send(Budget);
+    });
 };
 module.exports = {
-    createBudget,
-    updateBudget,
-    deleteBudget,
-    getBudget,
+  createBudget,
+  updateBudget,
+  deleteBudget,
+  getBudget,
 };
