@@ -1,4 +1,23 @@
 'use strict';
+const { program } = require('commander');
+
+program
+  .version('0.01', '-v --version')
+  .option('-p, --production', 'execute in production env')
+  .option('-d --development', 'execute in developement env');
+
+program.parse();
+const environmentOptions = program.opts();
+// check for ' -p -d' specified together
+if (environmentOptions.production && environmentOptions.development) {
+  throw new Error('Please specify one specific environment');
+}
+
+// run on development as default
+environmentOptions.production
+  ? (process.env.NODE_ENV = 'production')
+  : (process.env.NODE_ENV = 'development');
+
 require('dotenv').config();
 const express = require('express');
 const app = express();
