@@ -28,8 +28,7 @@ const validateParams = (
   }
 ) => {
   let param_errors = [];
-  validation = singupSchema.validate(params, options);
-  console.log(validation);
+  validation = signupSchema.validate(params, options);
   if (validation.error) {
     validation.error.details.map((validationError) => {
       let singleError = {

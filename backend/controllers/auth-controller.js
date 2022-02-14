@@ -128,7 +128,19 @@ const signUp = async (req, res, next) => {
   }
 };
 
+const deleteUser = async (req, res, next) => {
+  let { user } = req;
+  try {
+    await user.remove();
+  } catch (error) {
+    return next(new HttpError(500, 'user_delete_failed'));
+  }
+
+  res.status(200).send();
+};
+
 module.exports = {
   signIn,
   signUp,
+  deleteUser,
 };
