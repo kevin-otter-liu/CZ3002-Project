@@ -8,7 +8,7 @@ const hasExceededBudget = async (user_id, category) => {
 
   // throw error if no user
   if (!user) {
-    return new HttpError(400, 'user_not_found');
+    return false;
   }
 
   let current_date = new Date();
@@ -21,7 +21,7 @@ const hasExceededBudget = async (user_id, category) => {
   });
 
   if (!budget) {
-    return new HttpError(400, 'budget_not_found');
+    return false;
   }
 
   let transactions_sum = await Transaction.aggregate([
@@ -47,7 +47,7 @@ const hasExceededBudget = async (user_id, category) => {
   let transactions_sum_float;
 
   if (transactions_sum.length < 1) {
-    return new HttpError(400, 'no_transactions_found');
+    return false;
   }
 
   transactions_sum_float = parseFloat(transactions_sum[0].total_amount);
