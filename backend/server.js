@@ -27,16 +27,16 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('./db');
 
-// custom middlewares
-const checkAuth = require('./middleware/checkAuth');
-
 // default middleware used
 app.use(
   cors({
-    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
     origin: ['http://127.0.0.1:3000', '*'],
   })
 );
+
+// custom middlewares
+const checkAuth = require('./middleware/checkAuth');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
