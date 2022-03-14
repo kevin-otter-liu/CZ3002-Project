@@ -1,26 +1,32 @@
-import LoginPage from './pages/LoginPage';
-import MainPage from './pages/MainPage';
-import ErrorPage from './pages/ErrorPage';
+import { useSelector } from 'react-redux';
 
-import TransactionPage from './pages/TransactionPage';
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline, StyledEngineProvider } from '@mui/material';
 
-import { Switch, Route } from 'react-router-dom';
-function App() {
-  return (
-    <div>
-      <Switch>
-        <Route path='/' exact>
-          <TransactionPage />
-        </Route>
-        <Route path='/main' exact>
-          <MainPage />
-        </Route>
-        <Route path='/errorPage' exact>
-          <ErrorPage />
-        </Route>
-      </Switch>
-    </div>
-  );
-}
+// routing
+import Routes from 'routes';
+
+// defaultTheme
+import themes from 'themes';
+
+// project imports
+import NavigationScroll from 'layout/NavigationScroll';
+
+// ==============================|| APP ||============================== //
+
+const App = () => {
+    const customization = useSelector((state) => state.customization);
+
+    return (
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={themes(customization)}>
+                <CssBaseline />
+                <NavigationScroll>
+                    <Routes />
+                </NavigationScroll>
+            </ThemeProvider>
+        </StyledEngineProvider>
+    );
+};
 
 export default App;
