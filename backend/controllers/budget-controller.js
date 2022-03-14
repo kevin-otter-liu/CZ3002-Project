@@ -120,16 +120,25 @@ const deleteBudget = async (req, res, next) => {
   } catch (error) {
     console.log(error);
   }
-  res.status(200).json('Successfully deleted!');
+  res.status(200).send();
 };
 
 const getBudget = async (req, res, next) => {
   //SORTED BY START DATE DESC ORDER
-  Budget.find({})
-    .sort('-period_start_date')
-    .then(function (Budget) {
-      res.send(Budget);
-    });
+  let budgets = await Budget.find({}, { _id: 0, __v: 0 }).sort(
+    '-period_start_date'
+  );
+
+  if (budgets.length === 0) {
+    return next(new HttpError(404, 'budget_not_found'));
+  }
+
+  budgets = budgets.map((budget, i) => {
+    formatted_budget = budget.toObject();
+    formatted_budget.amount = parseFloat(formatted_budget.amount);
+    return formatted_budget;
+  });
+  res.status(200).send(budgets);
 };
 module.exports = {
   createBudget,
