@@ -54,6 +54,9 @@ const updateBudget = async (req, res, next) => {
   let { budget_key, amount, category, period_start_date, period_end_date } =
     req.body;
 
+  const start_date = new Date(period_start_date);
+  const end_date = new Date(period_end_date);
+
   try {
     let updatedBudget = await Budget.updateOne(
       {
@@ -62,8 +65,8 @@ const updateBudget = async (req, res, next) => {
       {
         amount,
         category,
-        period_start_date,
-        period_end_date,
+        period_start_date: start_date,
+        period_end_date: end_date,
       },
       (err, category) => {
         if (err) {
