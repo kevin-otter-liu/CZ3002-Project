@@ -1,16 +1,23 @@
 import { Card, ProgressBar, Button, Stack } from "react-bootstrap";
 import { currencyFormatter } from "./formatter";
+import { useBudgets } from "./BudgetsContext"
+
+
 
 export default function BudgetCard({ name, amount, max, gray }) {
-    const classNames = []
-    if (amount>max){
-        classNames.push("bg-danger", "bg-opacity-10")
-    } else if (gray){
-        classNames.push("bg-light")
-    }
+  const { budgets, deleteBudget } =
+    useBudgets()
+    
+  //const budget = budgets.find(b => b.id === budgetId) 
+  const classNames = [];
+  if (amount > max) {
+    classNames.push("bg-danger", "bg-opacity-10");
+  } else if (gray) {
+    classNames.push("bg-light");
+  }
 
   return (
-    <Card className = {classNames.join(" ")}>
+    <Card className={classNames.join(" ")}>
       <Card.Body>
         <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
           <div className="me-2">{name}</div>
@@ -30,6 +37,14 @@ export default function BudgetCard({ name, amount, max, gray }) {
         />
         <Stack direction="horizontal" gap="2" className="mt-4">
           <Button variant="outline-secondary">View Expenses</Button>
+          <Button
+            /*onClick={() => {
+              deleteBudget(budget);
+            }}*/
+            variant="outline-danger"
+          >
+            Delete Budget
+          </Button>
         </Stack>
       </Card.Body>
     </Card>
