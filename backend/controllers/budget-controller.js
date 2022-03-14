@@ -4,6 +4,7 @@ const e = require('cors');
 const { hasExceededBudget } = require('../libs/db-utils');
 
 const createBudget = async (req, res, next) => {
+  let { user } = req;
   console.log(req.body);
   const start_date = new Date(req.body.period_start_date);
   const end_date = new Date(req.body.period_end_date);
@@ -53,6 +54,8 @@ const createBudget = async (req, res, next) => {
 const updateBudget = async (req, res, next) => {
   let { budget_key, amount, category, period_start_date, period_end_date } =
     req.body;
+
+  let { user } = req;
 
   const start_date = new Date(period_start_date);
   const end_date = new Date(period_end_date);
