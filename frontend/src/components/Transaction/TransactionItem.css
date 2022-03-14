@@ -1,0 +1,56 @@
+.transaction-item {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font: inherit;
+    text-transform: capitalize;
+    border: none;
+    font-size: 16px;
+    box-shadow: 0 2px silver;
+
+  }
+
+  .transaction-item:hover {
+    background-color:silver;
+  }
+
+  .transaction-item:active {
+    background-color: silver;
+    box-shadow: 0 2px silver;
+    transform: translateY(4px)
+  }
+  
+  .transaction-item__category {
+    align-items: flex-start;
+    flex: 1;
+    color: black;
+    text-align: left;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .transaction-item__description {
+    align-items: flex-start;
+    flex: 2;
+    color: black;
+    text-align: left;
+  }
+
+  .transaction-item__income {
+    align-items: flex-end;
+    flex:1;
+    color: blue;
+    text-align: right;
+    padding-right: 1rem;
+  }
+
+  .transaction-item__expense {
+    align-items: flex-end;
+    flex: 1;
+    color: red;
+    text-align: right;
+    padding-right: 1rem;
+
+  }
