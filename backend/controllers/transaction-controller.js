@@ -30,9 +30,12 @@ const createTransaction = async (req, res, next) => {
 
   // save new transaction to database
   try {
-    await createdTransaction.save();
-
-    res.status(200).send(newTransaction);
+    let response = await createdTransaction.save();
+    let casted_response = response.toObject();
+    delete casted_response._id;
+    delete casted_response.__v;
+    casted_response.amount = parseFloat(casted_response.amount);
+    res.status(200).send(casted_response);
   } catch (error) {
     console.log(`Couldnt create Transaction with error: ${error}`);
     let httpError = new HttpError(null, null);
@@ -58,6 +61,7 @@ const createTransaction = async (req, res, next) => {
 const updateTransaction = async (req, res, next) => {
   let params = req.body;
 
+  let { user } = req;
   let transaction = await Transaction.findOne({
     transaction_key: params.transaction_key,
   });
@@ -70,18 +74,22 @@ const updateTransaction = async (req, res, next) => {
   for (let field in params) {
     !field ? null : (transaction[field] = params[field]);
   }
-
+  let savedTransaction;
   try {
-    let savedTransaction = await transaction.save();
+    savedTransaction = await transaction.save();
     let response = savedTransaction.toObject();
     delete response._id;
     delete response.__v;
+    response.amount = parseFloat(response.amount);
     res.status(200).send(response);
   } catch (error) {
     return next(new HttpError());
   }
 
-  let ExceedBudgetCheck = await hasExceededBudget(user._id, category);
+  let ExceedBudgetCheck = await hasExceededBudget(
+    user._id,
+    savedTransaction.category
+  );
   if (ExceedBudgetCheck instanceof HttpError) {
     return next(ExceedBudgetCheck);
   }
@@ -125,6 +133,14 @@ const getTransaction = async (req, res, next) => {
   ).sort({
     date_of_transaction: 'desc',
   });
+
+  if (transactions.length > 0) {
+    transactions = transactions.map((transaction) => {
+      formatted_transaction = transaction.toObject();
+      formatted_transaction.amount = parseFloat(formatted_transaction.amount);
+      return formatted_transaction;
+    });
+  }
 
   res.status(200).send(transactions);
   next();
