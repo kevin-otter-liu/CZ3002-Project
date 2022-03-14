@@ -1,10 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
-import AuthenticationReducer from './Authentication';
+import { createStore } from 'redux';
+import reducer from './reducer';
 
-const store = configureStore({
-  reducer: {
-    authentication: AuthenticationReducer,
-  },
-});
+// ==============================|| REDUX - MAIN STORE ||============================== //
 
-export default store;
+const store = createStore(reducer);
+const persister = 'Free';
+
+export { store, persister };
