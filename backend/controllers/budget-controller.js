@@ -2,6 +2,8 @@ const Budget = require('../models/Budget');
 const { v4: uuid } = require('uuid');
 const e = require('cors');
 const { hasExceededBudget } = require('../libs/db-utils');
+const HttpError = require('../libs/http-error');
+const mailer = require('../libs/mailer');
 
 const createBudget = async (req, res, next) => {
   let { user } = req;
@@ -21,18 +23,28 @@ const createBudget = async (req, res, next) => {
       period_end_date: end_date,
     });
 
-    await budget_data.save((err, data) => {
-      console.log('analyzing data...');
-      if (data) {
-        console.log('your data has been successfully saved.');
-        res.status(200).json(data);
-      } else {
-        console.log('Something went wrong while saving data.');
-        console.log(err);
-        res.status(400);
-        res.send(err);
-      }
-    });
+    try {
+      let data = await budget_data.save();
+      res.status(200).json(data);
+    } catch (error) {
+      console.log('Something went wrong while saving data.');
+      return next(new HttpError(423, 'budget_not_saved'));
+    }
+
+    console.log('your data has been successfully saved.');
+
+    // await budget_data.save((err, data) => {
+    //   console.log('analyzing data...');
+    //   if (data) {
+    //     console.log('your data has been successfully saved.');
+    //     res.status(200).json(data);
+    //   } else {
+    //     console.log('Something went wrong while saving data.');
+    //     console.log(err);
+    //     res.status(400);
+    //     res.send(err);
+    //   }
+    // });
   }
 
   let ExceedBudgetCheck = await hasExceededBudget(user._id, req.body.category);
