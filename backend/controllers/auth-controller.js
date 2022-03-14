@@ -133,7 +133,7 @@ const deleteUser = async (req, res, next) => {
   try {
     await user.remove();
   } catch (error) {
-    return next(new HttpError(500, 'user_delete_failed'));
+    return next(new HttpError());
   }
 
   res.status(200).send();
