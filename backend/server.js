@@ -31,7 +31,12 @@ const db = require('./db');
 const checkAuth = require('./middleware/checkAuth');
 
 // default middleware used
-app.use(cors());
+app.use(
+  cors({
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+    origin: ['http://127.0.0.1:3000', '*'],
+  })
+);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -56,14 +61,14 @@ app.use((error, req, res, next) => {
   }
 
   if (error.error_type === 'string') {
-    res
-      .status(error.status_code || 500)
-      .json({ message: error.message } || 'unknown_error');
+    res.status(error.status_code).json({ message: error.message });
   }
 
   if (error.error_type === 'array') {
-    res.status(error.status_code || 500).json(error.message || 'unknown_error');
+    res.status(error.status_code).json(error.message);
   }
+
+  res.status(500).json({ message: 'unknown_error' });
 });
 
 // initialise db, if db error dont start
