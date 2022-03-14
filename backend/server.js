@@ -28,11 +28,11 @@ const bodyParser = require('body-parser');
 const db = require('./db');
 
 // default middleware used
-app.use(
-  cors({
-    origin: ['http://127.0.0.1:3000', '*'],
-  })
-);
+// app.use(
+//   cors({
+//     origin: ['http://127.0.0.1:3000', '*'],
+//   })
+// );
 
 // custom middlewares
 const checkAuth = require('./middleware/checkAuth');
