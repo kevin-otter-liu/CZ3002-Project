@@ -51,7 +51,7 @@ const LoginPage = () => {
 
   const signUpHandler = async (emailInput, passwordInput) => {
     try {
-      let response = await axios.post('/api/v1/auth/sign-in', {
+      let response = await axios.post('/api/v1/auth/sign-up', {
         email: emailInput,
         password: passwordInput,
       });
