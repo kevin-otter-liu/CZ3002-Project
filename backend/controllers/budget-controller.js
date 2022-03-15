@@ -98,12 +98,10 @@ const deleteBudget = async (req, res, next) => {
 
 };
 
-const getBudget = async (req, res, next) => {
 
-  let budgets = await Budget.find({}, {
-    _id: 0,
-    __v: 0
-  }).sort(
+const getBudget = async (req, res, next) => {
+  //SORTED BY START DATE DESC ORDER
+  let budgets = await Budget.find({}, { _id: 0, __v: 0 }).sort(
     '-period_start_date'
   );
 
