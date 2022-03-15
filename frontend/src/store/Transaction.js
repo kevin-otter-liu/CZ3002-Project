@@ -1,10 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const transactionInitialState = {
   transactions: [],
 };
-
-// Action
+// Actions
 export const getTransactionsAsyn = createAsyncThunk(
   "transactions/getTransactionsAsyn",
   async () => {
@@ -14,14 +13,12 @@ export const getTransactionsAsyn = createAsyncThunk(
         Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
       },
     });
-
     if (resp.ok) {
       const transactions = await resp.json();
       return { transactions };
     }
   }
 );
-
 export const addTransactionAsyn = createAsyncThunk(
   "transactions/addTransactionAsyn",
   async (transaction) => {
@@ -31,8 +28,9 @@ export const addTransactionAsyn = createAsyncThunk(
       category: transaction.category,
       amount: parseFloat(transaction.amount),
       currency: "SGD",
+      payment_method: "cash",
     });
-
+    console.log(data);
     const requestOptions = {
       method: "POST",
       headers: {
@@ -41,38 +39,36 @@ export const addTransactionAsyn = createAsyncThunk(
       },
       body: data,
     };
-
-    fetch("http://172.21.148.163/api/v1/transaction", requestOptions)
-      .then(async (response) => {
-        const isJson = response.headers
-          .get("content-type")
-          ?.includes("application/json");
-        const transaction = isJson && (await response.json());
-        console.log(transaction);
-
-        return { transaction };
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    /*
+    try {
+      let resp = await fetch("http://172.21.148.163/api/v1/transaction", requestOptions)
+      
+    } catch (error) {
+      console.log(error)
+    }
+    */
+    const response = await fetch("http://172.21.148.163/api/v1/transaction", requestOptions);
+ 
+    const test = await response.json();
+    console.log(test)
+    return {test};
   }
 );
-
 export const deleteTransactionAsyn = createAsyncThunk(
   'transactions/deleteTransactionAsyn',
-  async(transaction) => {
-    const resp = await fetch(`http://172.21.148.163/api/v1/transaction/${transaction.id}`, {
+  async(transaction_id) => {
+    const resp = await fetch(`http://172.21.148.163/api/v1/transaction/${transaction_id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
       },
     });
     if (resp.ok) {
-      return {id: transaction.id};
+      const transaction = resp.json()
+      return {transaction};
     }
   }
 );
-
 export const editTransactionAsyn = createAsyncThunk(
   "transactions/editTransactionAsyn",
   async (transaction, id) => {
@@ -84,7 +80,6 @@ export const editTransactionAsyn = createAsyncThunk(
       amount: parseFloat(transaction.amount),
       currency: "SGD",
     });
-
     const requestOptions = {
       method: "PATCH",
       headers: {
@@ -93,7 +88,6 @@ export const editTransactionAsyn = createAsyncThunk(
       },
       body: data,
     };
-
     fetch("http://172.21.148.163/api/v1/transaction", requestOptions)
       .then(async (response) => {
         const isJson = response.headers
@@ -101,7 +95,6 @@ export const editTransactionAsyn = createAsyncThunk(
           ?.includes("application/json");
         const transaction = isJson && (await response.json());
         console.log(transaction);
-
         return { transaction };
       })
       .catch((error) => {
@@ -109,7 +102,6 @@ export const editTransactionAsyn = createAsyncThunk(
       });
   }
 );
-
 // Reducer
 export const TransactionSlice = createSlice({
   name: "transactions",
@@ -120,7 +112,8 @@ export const TransactionSlice = createSlice({
       return action.payload.transactions;
     },
     [addTransactionAsyn.fulfilled]: (state, action) => {
-      state.push(action.payload.transaction);
+      console.log(action);
+      state.push(action.payload.test);
     },
     [deleteTransactionAsyn.fulfilled]: (state, action) => {
       return state.filter((transaction) => transaction.id !== action.payload.transaction.id);
@@ -133,6 +126,5 @@ export const TransactionSlice = createSlice({
     },
   },
 });
-
 export const TransactionActions = TransactionSlice.actions;
 export default TransactionSlice.reducer;
