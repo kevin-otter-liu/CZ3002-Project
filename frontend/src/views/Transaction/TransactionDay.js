@@ -9,40 +9,35 @@ const TransactionDay = (props) => {
   
   // Get all the transactions for that day
 
-  //const transactions = useSelector((state) => state.transactions); 
+  // const transactions = useSelector((state) => state.transactions); 
 
-  
+  // Using static data for now
   const transactions = [    {
-    "user_id": "620dcdf23c4ac8d22745968a",
-    "transaction_key": "TX-7ac4b7d5-a065-4b93-9f1f-513e3a6712f2",
+    "user_id": "621e3b1ca6f08403e3635a6a",
+    "transaction_key": "TX-7281098f-cc19-454b-ace1-329e25903104",
     "description": "coffee",
     "type": "expense",
+    "payment_method": "cash",
     "category": "food",
-    "amount": {
-        "$numberDecimal": "7"
-    },
+    "amount": 7.5,
     "currency": "SGD",
-    "date_of_transaction": "2022-03-19T06:00:34.477Z",
-    "createdAt": "2022-03-18T06:00:34.479Z",
-    "updatedAt": "2022-03-18T06:00:34.479Z"
+    "date_of_transaction": "2022-03-15T06:31:24.469Z",
+    "createdAt": "2022-03-15T06:31:24.472Z",
+    "updatedAt": "2022-03-15T06:31:24.472Z"
 },
 {
-    "user_id": "620dcdf23c4ac8d22745968a",
-    "transaction_key": "TX-9a35712e-4a1a-40d2-9abd-8fc1633215be",
-    "description": "salary",
-    "type": "income",
-    "category": "salary",
-    "amount": {
-        "$numberDecimal": "10000"
-    },
-    "currency": "SGD",
-    "date_of_transaction": "2022-03-14T06:00:09.689Z",
-    "createdAt": "2022-03-17T06:00:09.690Z",
-    "updatedAt": "2022-03-17T06:00:09.690Z"
-}]  
-
-
-  console.log(transactions);
+  "user_id": "621e3b1ca6f08403e3635a6a",
+  "transaction_key": "TX-0579d59c-e6f8-4fbb-ba22-4ddd3c2d1406",
+  "description": "test",
+  "type": "expense",
+  "payment_method": "cash",
+  "category": "transport",
+  "amount": 123,
+  "currency": "SGD",
+  "date_of_transaction": "2022-03-14T14:30:01.292Z",
+  "createdAt": "2022-03-14T14:30:01.293Z",
+  "updatedAt": "2022-03-14T14:30:01.293Z"
+}] 
 
   const transactionList = utils.transactionsInDate(
     transactions,
@@ -84,7 +79,7 @@ const TransactionDay = (props) => {
                 date={new Date(transaction.date_of_transaction)}
                 category={transaction.category}
                 description={transaction.description}
-                amount={transaction.amount.$numberDecimal}
+                amount={transaction.amount}
                 type={transaction.type}
                 id = {transaction.transaction_key}
               ></TransactionItem>

@@ -48,7 +48,7 @@ export const transactionsInDate = (data, date) => {
 export const getOverall = (data, type) => {
 
   let filteredData = data.filter(
-    (elem) => elem.type == type 
+    (elem) => elem.type === type 
   )
   var sum = 0;
   for (var i=0; i<filteredData.length; i++) {
