@@ -10,7 +10,6 @@ const TransactionDay = (props) => {
   // Get all the transactions for that day
 
   const transactions = useSelector((state) => state.transaction.transactions); 
-  console.log(transactions);
   const transactionList = utils.transactionsInDate(
     transactions,
     props.date

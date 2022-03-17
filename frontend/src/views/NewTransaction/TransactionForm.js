@@ -7,8 +7,6 @@ import "./TransactionForm.css";
 import { addTransactionAsyn, deleteTransactionAsyn, editTransactionAsyn } from "../../store/Transaction";
 
 const TransactionForm = (props) => {
-
-  console.log(props.id);
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,6 +50,7 @@ const TransactionForm = (props) => {
       category: enteredCategory,
       amount: enteredAmount,
       date: new Date(enteredDate),
+      id: props.id
     };
     console.log(transaction);
     
@@ -59,7 +58,7 @@ const TransactionForm = (props) => {
     if (action === "add") {
       dispatch(addTransactionAsyn(transaction));
     } else if (action === "edit") {
-      dispatch(editTransactionAsyn(transaction, props.id));
+      dispatch(editTransactionAsyn(transaction));
     } 
     navigate(-1);
   };

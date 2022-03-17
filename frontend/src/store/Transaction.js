@@ -1,3 +1,4 @@
+import { propsToClassKey } from "@mui/styles";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const transactionInitialState = {
   transactions: [],
@@ -73,15 +74,17 @@ export const deleteTransactionAsyn = createAsyncThunk(
 );
 export const editTransactionAsyn = createAsyncThunk(
   "transactions/editTransactionAsyn",
-  async (transaction, id) => {
+  async (transaction) => {
     var data = JSON.stringify({
-      transaction_key: id,
+      transaction_key: transaction.id,
       description: transaction.description,
       type: transaction.type,
       category: transaction.category,
       amount: parseFloat(transaction.amount),
       currency: "SGD",
     });
+
+    console.log(`Edit request body: ${data}`);
     const requestOptions = {
       method: "PATCH",
       headers: {
@@ -90,18 +93,11 @@ export const editTransactionAsyn = createAsyncThunk(
       },
       body: data,
     };
-    fetch("http://172.21.148.163/api/v1/transaction", requestOptions)
-      .then(async (response) => {
-        const isJson = response.headers
-          .get("content-type")
-          ?.includes("application/json");
-        const transaction = isJson && (await response.json());
-        console.log(transaction);
-        return { transaction };
-      })
-      .catch((error) => {
-        console.error("There was an error!", error);
-      });
+    const resp = await fetch("http://172.21.148.163/api/v1/transaction", requestOptions)
+    if (resp.ok) {
+      const editedTransaction = await resp.json();
+      return { editedTransaction };
+    } 
   }
 );
 // Reducer
@@ -119,16 +115,18 @@ export const TransactionSlice = createSlice({
     },
     [deleteTransactionAsyn.fulfilled]: (state, action) => {
       console.log("Fulfilled" + `transactinon_key ${action.payload.transaction_id}`);
-      return state.transactions.filter(
+      let filteredata = state.transactions.filter(
         (elem) => elem.transaction_key !== action.payload.transaction_id
       );
+      state.transactions = filteredata;
     },
     [editTransactionAsyn.fulfilled]: (state, action) => {
-      const index = state.findIndex(
-        (transaction) =>
-          transaction.transaction_key ===
-          action.payload.transaction.transaction_key
+      let index = state.transactions.findIndex(
+        (elem) =>
+          elem.transaction_key ===
+          action.payload.editedTransaction.transaction_key
       );
+      console.log(`index: ${index}`);
       state[index] = action.payload.transaction;
     },
   },
