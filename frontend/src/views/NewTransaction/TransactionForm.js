@@ -8,6 +8,8 @@ import { addTransactionAsyn, deleteTransactionAsyn, editTransactionAsyn } from "
 
 const TransactionForm = (props) => {
 
+  console.log(props.id);
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,6 +20,7 @@ const TransactionForm = (props) => {
   const [enteredCategory, setEnteredCategory] = useState(props.category);
   const [enteredAmount, setEnteredAmount] = useState(props.amount);
   const [enteredNote, setEnteredNote] = useState(props.description);
+  const [action, setAction] = useState(props.action);
 
   const typeChangeHandler = (event) => {
     setEnteredType(event.target.value);
@@ -39,6 +42,7 @@ const TransactionForm = (props) => {
     setEnteredNote(event.target.value);
   };
 
+
   const submitHandler = (event) => {
     event.preventDefault();
 
@@ -52,15 +56,16 @@ const TransactionForm = (props) => {
     console.log(transaction);
     
     // TODO: Add in the following handlers
-    if (event.target.value === "add") {
+    if (action === "add") {
       dispatch(addTransactionAsyn(transaction));
-    } else if (props.action === "edit") {
+    } else if (action === "edit") {
       dispatch(editTransactionAsyn(transaction, props.id));
     } 
     navigate(-1);
   };
 
   const deleteHandler = () => {
+    setAction("delete");
     dispatch(deleteTransactionAsyn(props.id));
   }
 

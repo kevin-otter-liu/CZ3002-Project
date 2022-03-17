@@ -1,9 +1,20 @@
-import { createStore } from 'redux';
-import reducer from './reducer';
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import reducer from "./reducer";
+import thunk from 'redux-thunk'
+
+import AuthenticationReducer from "./Authentication";
+import transactionReducer from "./Transaction";
 
 // ==============================|| REDUX - MAIN STORE ||============================== //
 
-const store = createStore(reducer);
-const persister = 'Free';
+const allReducers = combineReducers({
+  main: reducer,
+  authentication: AuthenticationReducer,
+  transaction: transactionReducer,
+});
+
+const store = createStore(allReducers, applyMiddleware(thunk));
+const persister = "Free";
 
 export { store, persister };
+

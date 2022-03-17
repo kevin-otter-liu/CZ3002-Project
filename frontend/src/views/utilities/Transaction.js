@@ -1,24 +1,15 @@
 import React from 'react'
 
 import { Fragment, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getTransactionsAsyn } from "../../store/Transaction";
 
 // For UI
 import { IconButton } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Transaction from "../Transaction/Transaction";
 
-const TransactionPage = () => {
 
-  // Retrieve the Transaction data 
-  /*
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getTransactionsAsyn());
-  }); 
-  */
+const TransactionPage = () => {
 
   const navigate = useNavigate();
 

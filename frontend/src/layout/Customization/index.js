@@ -37,7 +37,7 @@ function valueText(value) {
 const Customization = () => {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const customization = useSelector((state) => state.customization);
+    const customization = useSelector((state) => state.main.customization);
 
     // drawer on/off
     const [open, setOpen] = useState(false);

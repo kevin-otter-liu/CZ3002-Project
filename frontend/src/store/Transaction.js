@@ -1,8 +1,11 @@
-
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const transactionInitialState = {
   transactions: [],
 };
+
+
+export const selectAllTransactions = (state) => state.transactions;
+
 // Actions
 export const getTransactionsAsyn = createAsyncThunk(
   "transactions/getTransactionsAsyn",
@@ -39,33 +42,32 @@ export const addTransactionAsyn = createAsyncThunk(
       },
       body: data,
     };
-    /*
-    try {
-      let resp = await fetch("http://172.21.148.163/api/v1/transaction", requestOptions)
-      
-    } catch (error) {
-      console.log(error)
-    }
-    */
-    const response = await fetch("http://172.21.148.163/api/v1/transaction", requestOptions);
- 
-    const test = await response.json();
-    console.log(test)
-    return {test};
+    const response = await fetch(
+      "http://172.21.148.163/api/v1/transaction",
+      requestOptions
+    );
+
+    const newtransaction = await response.json();
+    console.log(newtransaction);
+    return { newtransaction };
   }
 );
 export const deleteTransactionAsyn = createAsyncThunk(
-  'transactions/deleteTransactionAsyn',
-  async(transaction_id) => {
-    const resp = await fetch(`http://172.21.148.163/api/v1/transaction/${transaction_id}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-      },
-    });
+  "transactions/deleteTransactionAsyn",
+  async (transaction_id) => {
+    console.log(transaction_id);
+    const resp = await fetch(
+      `http://172.21.148.163/api/v1/transaction/${transaction_id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      }
+    );
     if (resp.ok) {
-      const transaction = resp.json()
-      return {transaction};
+      // const transaction = resp.json();
+      return { transaction_id };
     }
   }
 );
@@ -109,18 +111,23 @@ export const TransactionSlice = createSlice({
   reducers: {},
   extraReducers: {
     [getTransactionsAsyn.fulfilled]: (state, action) => {
-      return action.payload.transactions;
+      state.transactions = action.payload.transactions;
     },
     [addTransactionAsyn.fulfilled]: (state, action) => {
       console.log(action);
-      state.push(action.payload.test);
+      state.transactions = [...state.transactions, action.payload.newtransaction];
     },
     [deleteTransactionAsyn.fulfilled]: (state, action) => {
-      return state.filter((transaction) => transaction.id !== action.payload.transaction.id);
+      console.log("Fulfilled" + `transactinon_key ${action.payload.transaction_id}`);
+      return state.transactions.filter(
+        (elem) => elem.transaction_key !== action.payload.transaction_id
+      );
     },
     [editTransactionAsyn.fulfilled]: (state, action) => {
       const index = state.findIndex(
-        (transaction) => transaction.transaction_key === action.payload.transaction.transaction_key
+        (transaction) =>
+          transaction.transaction_key ===
+          action.payload.transaction.transaction_key
       );
       state[index] = action.payload.transaction;
     },
