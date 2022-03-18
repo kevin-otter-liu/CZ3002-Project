@@ -2,7 +2,6 @@
     "name": "finappsys",
     "version": "3.0.1",
     "private": true,
-    "proxy": "http://172.21.148.163/",
     "dependencies": {
         "@emotion/cache": "^11.4.0",
         "@emotion/react": "^11.4.0",
