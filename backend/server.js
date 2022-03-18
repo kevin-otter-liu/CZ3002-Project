@@ -31,6 +31,20 @@ const db = require('./db');
 const checkAuth = require('./middleware/checkAuth');
 
 // default middleware used
+app.use((req, res, next) => {
+  // set response header for origins allowed for the server
+  // this is checked by client browser
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  // tells which headers are allowed for request headers
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    '*',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+  next();
+});
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
