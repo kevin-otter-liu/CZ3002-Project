@@ -52,7 +52,7 @@ export const getOverall = (data, type) => {
   )
   var sum = 0;
   for (var i=0; i<filteredData.length; i++) {
-      sum += parseFloat(filteredData[i].amount.$numberDecimal);
+      sum += parseFloat(filteredData[i].amount);
   }
   return sum;
 };

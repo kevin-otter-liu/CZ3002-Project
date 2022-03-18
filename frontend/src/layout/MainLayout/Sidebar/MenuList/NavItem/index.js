@@ -19,7 +19,7 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 const NavItem = ({ item, level }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const customization = useSelector((state) => state.customization);
+    const customization = useSelector((state) => state.main.customization);
     const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
 
     const Icon = item.icon;

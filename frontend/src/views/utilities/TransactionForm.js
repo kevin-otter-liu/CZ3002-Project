@@ -15,6 +15,7 @@ const TransactionFormPage = () => {
         amount={location.state.amount}
         description={location.state.description}
         action={location.state.action} 
+        id = {location.state.id}
       />
   );
 }

@@ -43,7 +43,7 @@ import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
 
 const ProfileSection = () => {
     const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
+    const customization = useSelector((state) => state.main.customization);
     const navigate = useNavigate();
 
     const [sdm, setSdm] = useState(true);

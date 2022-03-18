@@ -38,7 +38,7 @@ const status = [
 const TotalGrowthBarChart = ({ isLoading }) => {
     const [value, setValue] = useState('today');
     const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
+    const customization = useSelector((state) => state.main.customization);
 
     const { navType } = customization;
     const { primary } = theme.palette.text;
