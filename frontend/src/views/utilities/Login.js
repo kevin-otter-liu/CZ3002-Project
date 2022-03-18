@@ -33,28 +33,48 @@ const LoginPage = () => {
     setIsSignUp(false);
   };
 
-  const signInHandler = async (emailInput, passwordInput) => {
-    try {
-      let response = await axios.post("/api/v1/auth/sign-in", {
-        email: emailInput,
-        password: passwordInput,
-      });
+  // const signInHandler = async (emailInput, passwordInput) => {
+  //   try {
+  //     let response = await axios.post("/api/v1/auth/sign-in", {
+  //       email: emailInput,
+  //       password: passwordInput,
+  //     });
 
-      if (response.status === 200) {
-        dispatch(AuthenticationActions.login());
+  //     if (response.status === 200) {
+  //       dispatch(AuthenticationActions.login());
+  //       toast("Successfully signed in! Directing to the main page ... ", {
+  //         autoClose: 750,
+  //       });
+  //       localStorage.setItem("jwt_token", response.data.token);
+  //       navigate("/dashboard/default");
+  //     } 
+  //   } catch (error) {
+  //     // probably need implement a modal to alert the user of error
+  //     let error_list = error.response.data.map((error) => {
+  //       toast(`Error! ${error.message}`, {autoClose:1500});
+  //     });
+  //   }
+  // };
+
+  const signInHandler = async (emailInput, passwordInput) => {
+    await axios.post("/api/v1/auth/sign-in", {
+      email: emailInput,
+      password: passwordInput,
+    })
+    .then(response => {
+      dispatch(AuthenticationActions.login());
         toast("Successfully signed in! Directing to the main page ... ", {
           autoClose: 750,
         });
         localStorage.setItem("jwt_token", response.data.token);
         navigate("/dashboard/default");
-      }
-    } catch (error) {
-      // probably need implement a modal to alert the user of error
-      let error_list = error.response.data.map((error) => {
-        toast(`Error! ${error.message}`, {autoClose:1500});
-      });
-    }
+    }) 
+    .catch(function(error) {
+      // Request made and server responded 
+      toast.error(error.response.data.message, {autoClose:3000});
+    })
   };
+  
 
   const signUpHandler = async (emailInput, passwordInput) => {
     try {
@@ -64,10 +84,13 @@ const LoginPage = () => {
       });
 
       dispatch(AuthenticationActions.login());
+      toast("Account successfully created! Directing to the main page ... ", {
+        autoClose: 750,
+      });
       navigate("/dashboard/default");
     } catch (error) {
       let error_list = error.response.data.map((error) => {
-        toast(`Error! ${error.message}`, {autoClose:1500});
+        toast(`Error! ${error.message}`, {autoClose:3000});
       });
     }
   };

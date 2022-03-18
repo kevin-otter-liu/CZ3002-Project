@@ -37,7 +37,7 @@ export const addTransactionAsyn = createAsyncThunk(
       currency: "SGD",
       payment_method: "cash",
     });
-    console.log(data);
+    // console.log(data);
     const requestOptions = {
       method: "POST",
       headers: {
@@ -84,6 +84,8 @@ export const editTransactionAsyn = createAsyncThunk(
       amount: parseFloat(transaction.amount),
       currency: "SGD",
     });
+
+    console.log(`Edit request body: ${data}`);
 
     const requestOptions = {
       method: "PATCH",
