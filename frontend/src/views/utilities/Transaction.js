@@ -27,9 +27,9 @@ const TransactionPage = () => {
     navigate(
       '/utils/transaction/form', {
       state: {
-        type: "income",
+        type: "expense",
         date: new Date(),
-        category: "",
+        category: "food",
         amount: "",
         description: "",
         action: "add",
