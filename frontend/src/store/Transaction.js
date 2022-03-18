@@ -114,7 +114,6 @@ export const TransactionSlice = createSlice({
       state.transactions = [...state.transactions, action.payload.newtransaction];
     },
     [deleteTransactionAsyn.fulfilled]: (state, action) => {
-      console.log("Fulfilled" + `transactinon_key ${action.payload.transaction_id}`);
       let filteredata = state.transactions.filter(
         (elem) => elem.transaction_key !== action.payload.transaction_id
       );
@@ -127,7 +126,7 @@ export const TransactionSlice = createSlice({
           action.payload.editedTransaction.transaction_key
       );
       console.log(`index: ${index}`);
-      state[index] = action.payload.transaction;
+      state.transactions[index].description = action.payload.editedtransaction;
     },
   },
 });

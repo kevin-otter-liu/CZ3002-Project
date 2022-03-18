@@ -1,5 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, StyledEngineProvider } from "@mui/material";
@@ -13,21 +12,12 @@ import themes from "themes";
 // project imports
 import NavigationScroll from "layout/NavigationScroll";
 
-import { getTransactionsAsyn } from "store/Transaction";
 
 
 // ==============================|| APP ||============================== //
 
 const App = () => {
   const customization = useSelector((state) => state.main.customization);
-  
-  // Retrieve the Transaction data
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    console.log("GETTING DATA");
-    dispatch(getTransactionsAsyn());
-  }, []);
 
   return (
     <StyledEngineProvider injectFirst>
