@@ -1,11 +1,14 @@
 import { propsToClassKey } from "@mui/styles";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
+
 const transactionInitialState = {
   transactions: [],
 };
-
-
-export const selectAllTransactions = (state) => state.transactions;
 
 // Actions
 export const getTransactionsAsyn = createAsyncThunk(
@@ -34,7 +37,7 @@ export const addTransactionAsyn = createAsyncThunk(
       currency: "SGD",
       payment_method: "cash",
     });
-    console.log(data);
+    // console.log(data);
     const requestOptions = {
       method: "POST",
       headers: {
@@ -49,14 +52,12 @@ export const addTransactionAsyn = createAsyncThunk(
     );
 
     const newtransaction = await response.json();
-    console.log(newtransaction);
     return { newtransaction };
   }
 );
 export const deleteTransactionAsyn = createAsyncThunk(
   "transactions/deleteTransactionAsyn",
   async (transaction_id) => {
-    console.log(transaction_id);
     const resp = await fetch(
       `http://172.21.148.163/api/v1/transaction/${transaction_id}`,
       {
@@ -85,6 +86,7 @@ export const editTransactionAsyn = createAsyncThunk(
     });
 
     console.log(`Edit request body: ${data}`);
+
     const requestOptions = {
       method: "PATCH",
       headers: {
@@ -112,13 +114,18 @@ export const TransactionSlice = createSlice({
     [addTransactionAsyn.fulfilled]: (state, action) => {
       console.log(action);
       state.transactions = [...state.transactions, action.payload.newtransaction];
+      toast("Transaction successfully added! ", {
+        autoClose: 750,
+      });
     },
     [deleteTransactionAsyn.fulfilled]: (state, action) => {
-      console.log("Fulfilled" + `transactinon_key ${action.payload.transaction_id}`);
       let filteredata = state.transactions.filter(
         (elem) => elem.transaction_key !== action.payload.transaction_id
       );
       state.transactions = filteredata;
+      toast("Transaction successfully deleted!", {
+        autoClose: 750,
+      });
     },
     [editTransactionAsyn.fulfilled]: (state, action) => {
       let index = state.transactions.findIndex(
@@ -126,8 +133,10 @@ export const TransactionSlice = createSlice({
           elem.transaction_key ===
           action.payload.editedTransaction.transaction_key
       );
-      console.log(`index: ${index}`);
-      state[index] = action.payload.transaction;
+      state.transactions[index] = action.payload.editedTransaction;
+      toast("Transaction successfully updated!", {
+        autoClose: 750,
+      });
     },
   },
 });
