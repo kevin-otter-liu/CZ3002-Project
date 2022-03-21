@@ -1,10 +1,20 @@
-import { configureStore } from '@reduxjs/toolkit';
-import AuthenticationReducer from './Authentication';
+import { combineReducers, createStore, applyMiddleware } from "redux";
+import reducer from "./reducer";
+import thunk from 'redux-thunk'
 
-const store = configureStore({
-  reducer: {
-    authentication: AuthenticationReducer,
-  },
+import AuthenticationReducer from "./Authentication";
+import transactionReducer from "./Transaction";
+
+// ==============================|| REDUX - MAIN STORE ||============================== //
+
+const allReducers = combineReducers({
+  main: reducer,
+  authentication: AuthenticationReducer,
+  transaction: transactionReducer,
 });
 
-export default store;
+const store = createStore(allReducers, applyMiddleware(thunk));
+const persister = "Free";
+
+export { store, persister };
+

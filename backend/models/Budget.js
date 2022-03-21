@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+var uniqueValidator = require('mongoose-unique-validator');
+
 const Budget = new Schema(
   {
     user_id: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
@@ -11,16 +13,19 @@ const Budget = new Schema(
     category: {
       type: String,
       required: true,
+      unique: true,
     },
     period_start_date: {
-      type: String,
+      type: Date,
       required: true,
     },
     period_end_date: {
-      type: String,
+      type: Date,
       required: true,
     },
   },
   { timestamps: true }
 );
+
+Budget.plugin(uniqueValidator);
 module.exports = mongoose.model('Budget', Budget);

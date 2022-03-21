@@ -1,0 +1,72 @@
+[
+    {
+        "user_id": "620dcdf23c4ac8d22745968a",
+        "transaction_key": "TX-7ac4b7d5-a065-4b93-9f1f-513e3a6712f2",
+        "description": "coffee",
+        "type": "expense",
+        "category": "food",
+        "amount": {
+            "$numberDecimal": "7"
+        },
+        "currency": "SGD",
+        "date_of_transaction": "2022-02-19T06:00:34.477Z",
+        "createdAt": "2022-02-18T06:00:34.479Z",
+        "updatedAt": "2022-02-18T06:00:34.479Z"
+    },
+    {
+        "user_id": "620dcdf23c4ac8d22745968a",
+        "transaction_key": "TX-9a35712e-4a1a-40d2-9abd-8fc1633215be",
+        "description": "salary",
+        "type": "income",
+        "category": "salary",
+        "amount": {
+            "$numberDecimal": "10000"
+        },
+        "currency": "SGD",
+        "date_of_transaction": "2022-02-14T06:00:09.689Z",
+        "createdAt": "2022-02-17T06:00:09.690Z",
+        "updatedAt": "2022-02-17T06:00:09.690Z"
+    },
+    {
+        "user_id": "620dcdf23c4ac8d22745968a",
+        "transaction_key": "TX-e48989cc-f6e7-47e1-8094-8e3420b9e22e",
+        "description": "Bonus",
+        "type": "income",
+        "category": "bonus",
+        "amount": {
+            "$numberDecimal": "8888.88"
+        },
+        "currency": "SGD",
+        "date_of_transaction": "2022-02-13T05:59:43.074Z",
+        "createdAt": "2022-02-17T05:59:43.076Z",
+        "updatedAt": "2022-02-17T05:59:43.076Z"
+    },
+    {
+        "user_id": "620dcdf23c4ac8d22745968a",
+        "transaction_key": "TX-c173b918-0da8-42e8-91c0-ce1f9aedaa2c",
+        "description": "grab",
+        "type": "expense",
+        "category": "transportation",
+        "amount": {
+            "$numberDecimal": "33.99"
+        },
+        "currency": "SGD",
+        "date_of_transaction": "2022-02-17T05:59:11.791Z",
+        "createdAt": "2022-02-17T05:59:11.793Z",
+        "updatedAt": "2022-02-17T05:59:11.793Z"
+    },
+    {
+        "user_id": "620dcdf23c4ac8d22745968a",
+        "transaction_key": "TX-e2a63285-170b-4bd1-9ccc-a1694dcbcd5f",
+        "description": "bubble tea",
+        "type": "expense",
+        "category": "food",
+        "amount": {
+            "$numberDecimal": "12.99"
+        },
+        "currency": "SGD",
+        "date_of_transaction": "2022-02-17T05:58:53.328Z",
+        "createdAt": "2022-02-17T05:58:53.332Z",
+        "updatedAt": "2022-02-17T05:58:53.332Z"
+    }
+]

@@ -1,4 +1,23 @@
 'use strict';
+const { program } = require('commander');
+
+program
+  .version('0.01', '-v --version')
+  .option('-p, --production', 'execute in production env')
+  .option('-d --development', 'execute in developement env');
+
+program.parse();
+const environmentOptions = program.opts();
+// check for ' -p -d' specified together
+if (environmentOptions.production && environmentOptions.development) {
+  throw new Error('Please specify one specific environment');
+}
+
+// run on development as default
+environmentOptions.production
+  ? (process.env.NODE_ENV = 'production')
+  : (process.env.NODE_ENV = 'development');
+
 require('dotenv').config();
 const express = require('express');
 const app = express();
@@ -8,13 +27,39 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('./db');
 
-// custom middlewares
-const checkAuth = require('./middleware/checkAuth');
-
 // default middleware used
+// app.use((req, res, next) => {
+//   // set response header for origins allowed for the server
+//   // this is checked by client browser
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   // tells which headers are allowed for request headers
+//   res.setHeader(
+//     'Access-Control-Allow-Headers',
+//     '*',
+//     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+//   );
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+//   next();
+// });
+// var corsOptions = {
+//   origin: '*',
+//   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+//   methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
+//   allowedHeaders: [
+//     'Content-Type',
+//     'Authorization',
+//     'Origin',
+//     'X-Requested-With',
+//     'Accept',
+//   ],
+// };
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// custom middlewares
+const checkAuth = require('./middleware/checkAuth');
 
 // importing diff api routes
 const authApis = require('./routes/auth-routes');

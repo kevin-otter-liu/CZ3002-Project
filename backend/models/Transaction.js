@@ -6,7 +6,8 @@ const TransactionSchema = new Schema(
     user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     transaction_key: { type: String, required: true, unique: true },
     description: { type: String, required: true },
-    type: { type: String, required: true },
+    type: { type: String, required: true }, // expense || income
+    payment_method: { type: String, required: true }, // bank || credit-card || cash
     category: { type: String, required: true },
     amount: { type: Schema.Types.Decimal128, required: true },
     currency: { type: String, required: true },
