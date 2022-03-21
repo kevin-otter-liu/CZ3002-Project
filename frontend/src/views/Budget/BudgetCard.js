@@ -1,12 +1,12 @@
 import { Card, ProgressBar, Button, Stack } from "react-bootstrap";
 import { currencyFormatter } from "./formatter";
-import { useBudgets } from "./BudgetsContext"
+//import { useBudgets } from "./BudgetsContext"
 
 
 
 export default function BudgetCard({ name, amount, max, gray }) {
-  const { budgets, deleteBudget } =
-    useBudgets()
+  //const { budgets, deleteBudget } =
+    //useBudgets()
     
   //const budget = budgets.find(b => b.id === budgetId) 
   const classNames = [];
