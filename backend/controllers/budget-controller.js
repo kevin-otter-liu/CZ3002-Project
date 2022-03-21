@@ -60,8 +60,8 @@ const updateBudget = async (req, res, next) => {
       }, {
         amount,
         category,
-        budget_start_date: start_date,
-        budget_end_date: end_date
+        period_start_date: start_date,
+        period_end_date: end_date
       }, {
         new: true
       },

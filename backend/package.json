@@ -4,7 +4,7 @@
   "description": "Backend API of CZ3002 project",
   "main": "server.js",
   "scripts": {
-    "nodemon": "nodemon server --production",
+    "nodemon": "nodemon server --development",
     "test": "mocha",
     "start": "node server.js",
     "coverage": "nyc --reporter=html npm run test"

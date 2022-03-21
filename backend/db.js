@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 // TODO : unable to update env variable
-process.env.NODE_ENV = 'production';
+// process.env.NODE_ENV = 'production';
 
 let dbUri;
 
