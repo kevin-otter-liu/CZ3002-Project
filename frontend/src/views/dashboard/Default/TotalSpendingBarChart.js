@@ -16,7 +16,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 
 // chart data
-import chartData from './chart-data/total-growth-bar-chart';
+import chartData from './chart-data/total-spending-bar-chart';
 
 const status = [
     {
@@ -35,8 +35,8 @@ const status = [
 
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
-const TotalGrowthBarChart = ({ isLoading }) => {
-    const [value, setValue] = useState('today');
+const TotalSpendingBarChart = ({ isLoading }) => {
+    const [value, setValue] = useState('year');
     const theme = useTheme();
     const customization = useSelector((state) => state.main.customization);
 
@@ -54,7 +54,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
     useEffect(() => {
         const newChartData = {
             ...chartData.options,
-            colors: [primary200, primaryDark, secondaryMain, secondaryLight],
+            colors: [ secondaryMain,primary200, primaryDark,darkLight, secondaryLight,primary,grey500],
             xaxis: {
                 labels: {
                     style: {
@@ -100,14 +100,14 @@ const TotalGrowthBarChart = ({ isLoading }) => {
                                 <Grid item>
                                     <Grid container direction="column" spacing={1}>
                                         <Grid item>
-                                            <Typography variant="subtitle2">Total Growth</Typography>
+                                            <Typography variant="subtitle2">Total Spending</Typography>
                                         </Grid>
                                         <Grid item>
-                                            <Typography variant="h3">$2,324.00</Typography>
+                                            <Typography variant="h3">$5,496.00</Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                <Grid item>
+                                {/* <Grid item>
                                     <TextField
                                         id="standard-select-currency"
                                         select
@@ -120,7 +120,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
                                             </MenuItem>
                                         ))}
                                     </TextField>
-                                </Grid>
+                                </Grid> */}
                             </Grid>
                         </Grid>
                         <Grid item xs={12}>
@@ -133,8 +133,9 @@ const TotalGrowthBarChart = ({ isLoading }) => {
     );
 };
 
-TotalGrowthBarChart.propTypes = {
+TotalSpendingBarChart.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default TotalGrowthBarChart;
+export default TotalSpendingBarChart;
+
