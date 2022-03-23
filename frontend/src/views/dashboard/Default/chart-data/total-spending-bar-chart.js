@@ -34,7 +34,7 @@ const chartData = {
         },
         xaxis: {
             type: 'category',
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: ['Apr 21', 'May 21', 'Jun 21', 'Jul 21', 'Aug 21', 'Sep 21', 'Oct 21', 'Nov 21', 'Dec 21','Jan 22', 'Feb 22', 'Mar 22']
         },
         legend: {
             show: true,
@@ -67,19 +67,30 @@ const chartData = {
     },
     series: [
         {
-            name: 'Investment',
+            name: 'Food',
             data: [35, 125, 35, 35, 35, 80, 35, 20, 35, 45, 15, 75]
         },
         {
-            name: 'Loss',
+            name: 'Transport',
             data: [35, 15, 15, 35, 65, 40, 80, 25, 15, 85, 25, 75]
         },
         {
-            name: 'Profit',
+            name: 'Apparel',
+            data: [35, 145, 35, 35, 20, 105, 100, 10, 65, 45, 30, 10]
+        },{
+            name: 'Social Life',
+            data: [35, 125, 35, 35, 35, 80, 35, 20, 35, 45, 15, 75]
+        },
+        {
+            name: 'Household',
+            data: [35, 15, 15, 35, 65, 40, 80, 25, 15, 85, 25, 75]
+        },
+        {
+            name: 'Gift',
             data: [35, 145, 35, 35, 20, 105, 100, 10, 65, 45, 30, 10]
         },
         {
-            name: 'Maintenance',
+            name: 'Other',
             data: [0, 0, 75, 0, 0, 115, 0, 0, 0, 0, 150, 0]
         }
     ]
