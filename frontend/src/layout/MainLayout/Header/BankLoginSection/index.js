@@ -8,26 +8,20 @@ import "react-toastify/dist/ReactToastify.css";
 
 // material-ui
 import { useTheme } from "@mui/material/styles";
-import {
-  Avatar,
-  Box,
-  Tooltip,
-  ButtonBase,
-  Modal,
-} from "@mui/material";
+import { Avatar, Box, Tooltip, ButtonBase, Modal } from "@mui/material";
 
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 
 import { addTransactionAsyn } from "../../../../store/Transaction";
 import { BankData } from "./bank_data";
 
-// ==============================|| NOTIFICATION ||============================== //
+// ==============================|| BANK LOGIN SECTION ||============================== //
 
 toast.configure();
 
 const sleep = (milliseconds) => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
 
 const BankLoginSection = () => {
   const theme = useTheme();
@@ -45,17 +39,19 @@ const BankLoginSection = () => {
   };
 
   const loginHandler = () => {
-    toast("Retrieving transaction data from your DBS account ...", {autoClose: 3000});    
+    toast("Retrieving transaction data from your DBS account ...", {
+      autoClose: 3000,
+    });
     // Set timeout
-    sleep(3500).then( () => {
-      navigate('/utils/transaction/');
-      for (var i=0; i<BankData.length; i++) {
+    sleep(3500).then(() => {
+      navigate("/utils/transaction/");
+      for (var i = 0; i < BankData.length; i++) {
         dispatch(addTransactionAsyn(BankData[i]));
       }
-      toast("Successfully connected to your DBS account!", {autoClose:500});
-    })
+      toast("Successfully connected to your DBS account!", { autoClose: 500 });
+    });
     setIsOpen(false);
-  }
+  };
 
   return (
     <>
@@ -68,7 +64,7 @@ const BankLoginSection = () => {
           },
         }}
       >
-        <Tooltip title="Connect with bank">
+        <Tooltip title="Connect with DBS">
           <ButtonBase sx={{ borderRadius: "12px" }} onClick={handleOpen}>
             <Avatar
               variant="rounded"
@@ -97,7 +93,7 @@ const BankLoginSection = () => {
         aria-labelledby={theme.typography.h1}
         aria-describedby={theme.typography.body1}
       >
-        <BankLogin submitHandler={loginHandler}/>
+        <BankLogin submitHandler={loginHandler} />
       </Modal>
     </>
   );

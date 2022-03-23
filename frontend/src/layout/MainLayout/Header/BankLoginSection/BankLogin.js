@@ -1,17 +1,10 @@
 import React from "react";
 import { useRef } from "react";
-
-import { useTheme } from "@mui/material/styles";
-import { Box } from "@mui/material";
 import classes from "./BankLogin.module.css";
-
 
 import dbslogo from "../../../../assets/images/dbslogo.png";
 
 const BankLogin = (props) => {
-  const theme = useTheme();
-
-  const loginHandler = () => {};
 
   const usernameInput = useRef();
   const passwordInput = useRef();

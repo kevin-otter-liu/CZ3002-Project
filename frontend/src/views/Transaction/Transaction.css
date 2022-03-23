@@ -29,7 +29,7 @@
   .transaction__date {
     align-items: flex-start;
     flex: 1;
-    color: #343a40;;
+    color: #343a40;
   }
 
   .transaction__overallIncome {
