@@ -9,10 +9,17 @@ const mailer = require('../libs/mailer');
 
 const createTransaction = async (req, res, next) => {
   // TODO: implement validations
-  let { description, type, category, amount, currency, payment_method } =
-    req.body;
+  let {
+    description,
+    type,
+    category,
+    amount,
+    currency,
+    payment_method,
+    date_of_transaction,
+  } = req.body;
   let { user } = req;
-  let transactionDate = new Date();
+  let transactionDate = new Date(date_of_transaction);
 
   let newTransaction = {
     payment_method,
