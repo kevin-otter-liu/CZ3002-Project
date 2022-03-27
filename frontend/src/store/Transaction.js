@@ -36,6 +36,7 @@ export const addTransactionAsyn = createAsyncThunk(
       amount: parseFloat(transaction.amount),
       currency: "SGD",
       payment_method: "cash",
+      date_of_transaction: transaction.date,
     });
     // console.log(data);
     const requestOptions = {
@@ -83,6 +84,8 @@ export const editTransactionAsyn = createAsyncThunk(
       category: transaction.category,
       amount: parseFloat(transaction.amount),
       currency: "SGD",
+      payment_method: "cash",
+      date_of_transaction: transaction.date,
     });
 
     console.log(`Edit request body: ${data}`);
