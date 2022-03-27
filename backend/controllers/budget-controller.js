@@ -1,20 +1,12 @@
 const Budget = require('../models/Budget');
-const {
-  v4: uuid
-} = require('uuid');
+const { v4: uuid } = require('uuid');
 const e = require('cors');
-const {
-  hasExceededBudget
-} = require('../libs/db-utils');
+const { getDifference, hasExceededBudget } = require('../libs/db-utils');
 const HttpError = require('../libs/http-error');
 const mailer = require('../libs/mailer');
 
-
-
 const createBudget = async (req, res, next) => {
-  let {
-    user
-  } = req;
+  let { user } = req;
   console.log(req.body);
   const start_date = new Date(req.body.period_start_date);
   const end_date = new Date(req.body.period_end_date);
@@ -32,7 +24,7 @@ const createBudget = async (req, res, next) => {
     });
 
     let existing_category = await Budget.find({
-      user_id: user._id
+      user_id: user._id,
     }).distinct('category');
 
     if (existing_category.includes(req.body.category)) {
@@ -45,45 +37,39 @@ const createBudget = async (req, res, next) => {
         formatted_budget = budget_data.toObject();
         formatted_budget.amount = parseFloat(formatted_budget.amount);
         res.status(200).send(formatted_budget);
-        console.log("your data has been successfully saved.");
+        console.log('your data has been successfully saved.');
       } else {
         return next(new HttpError(423, 'budget_not_saved'));
       }
     } catch {
       return next(new HttpError(423, 'budget_not_saved'));
     }
-  };
+  }
 
   handleExceedBudget(user, req);
-
 };
 
 const updateBudget = async (req, res, next) => {
-  let {
-    user
-  } = req;
-  let {
-    budget_key,
-    amount,
-    category,
-    period_start_date,
-    period_end_date
-  } =
-  req.body;
+  let { user } = req;
+  let { budget_key, amount, category, period_start_date, period_end_date } =
+    req.body;
 
   const start_date = new Date(period_start_date);
   const end_date = new Date(period_end_date);
 
   try {
-    var updatedBudget = await Budget.findOneAndUpdate({
-        budget_key: budget_key
-      }, {
+    var updatedBudget = await Budget.findOneAndUpdate(
+      {
+        budget_key: budget_key,
+      },
+      {
         amount,
         category,
         period_start_date: start_date,
-        period_end_date: end_date
-      }, {
-        new: true
+        period_end_date: end_date,
+      },
+      {
+        new: true,
       },
       (err, category) => {
         if (err) {
@@ -118,12 +104,13 @@ const deleteBudget = async (req, res, next) => {
 
 const getBudget = async (req, res, next) => {
   //SORTED BY START DATE DESC ORDER
-  let budgets = await Budget.find({}, {
-    _id: 0,
-    __v: 0
-  }).sort(
-    '-period_start_date'
-  );
+  let budgets = await Budget.find(
+    {},
+    {
+      _id: 0,
+      __v: 0,
+    }
+  ).sort('-period_start_date');
 
   if (budgets.length === 0) {
     return next(new HttpError(404, 'budget_not_found'));
@@ -137,7 +124,6 @@ const getBudget = async (req, res, next) => {
   res.status(200).send(budgets);
 };
 
-
 const handleExceedBudget = async (user, req) => {
   let ExceedBudgetCheck = await hasExceededBudget(user._id, req.body.category);
   if (ExceedBudgetCheck instanceof HttpError) {
@@ -149,12 +135,12 @@ const handleExceedBudget = async (user, req) => {
     mailer.sendMail(
       user.email,
       `budget exceeded for category:${req.body.category}`,
-      'your budget has exceeded'
+      null,
+      { amount: await getDifference(user._id, req.body.category) }
     );
     console.log('noti mail sent');
   }
 };
-
 
 module.exports = {
   createBudget,
