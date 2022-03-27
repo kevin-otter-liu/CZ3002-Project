@@ -57,7 +57,7 @@ const TransactionForm = (props) => {
       type: enteredType,
       category: enteredCategory,
       amount: enteredAmount,
-      date: new Date(enteredDate),
+      date: enteredDate,
       id: props.id,
     };
 
