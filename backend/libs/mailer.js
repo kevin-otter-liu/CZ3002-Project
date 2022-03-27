@@ -64,8 +64,8 @@ function sendMail(to, subject, text, replacements) {
         },
 
         {
-          filename: 'image-5.png',
-          path: process.cwd() + '/assets/images/image-5.png',
+          filename: 'image-5.svg',
+          path: process.cwd() + '/assets/images/image-5.svg',
           cid: 'unique@image-5',
         },
       ],

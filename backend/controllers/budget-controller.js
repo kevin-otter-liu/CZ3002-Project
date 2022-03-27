@@ -136,7 +136,10 @@ const handleExceedBudget = async (user, req) => {
       user.email,
       `budget exceeded for category:${req.body.category}`,
       null,
-      { amount: await getDifference(user._id, req.body.category) }
+      {
+        amount: await getDifference(user._id, req.body.category),
+        category: req.body.category,
+      }
     );
     console.log('noti mail sent');
   }
