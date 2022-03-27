@@ -58,9 +58,9 @@ const createTransaction = async (req, res, next) => {
   if (ExceedBudgetCheck === true) {
     mailer.sendMail(
       user.email,
-      `budget exceeded for category:${category}`,
-      'your budget has exceeded',
-      { amount: await getDifference(user._id, category) }
+      `Budget exceeded for ${category} category`,
+      'Your budget has exceeded',
+      { amount: await getDifference(user._id, category), category: category }
     );
     console.log('noti mail sent');
   }
@@ -110,9 +110,12 @@ const updateTransaction = async (req, res, next) => {
   if (ExceedBudgetCheck === true) {
     mailer.sendMail(
       user.email,
-      `budget exceeded for category:${savedTransaction.category}`,
-      'your budget has exceeded',
-      { amount: await getDifference(user._id, savedTransaction.category) }
+      `Budget exceeded for ${savedTransaction.category} category`,
+      'Your budget has exceeded',
+      {
+        amount: await getDifference(user._id, savedTransaction.category),
+        category: savedTransaction.category,
+      }
     );
     console.log('noti mail sent');
   }
