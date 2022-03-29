@@ -10,5 +10,6 @@ router.post('/', budgetController.createBudget);
 router.get('/', budgetController.getBudget);
 router.put('/', budgetController.updateBudget);
 router.delete('/', budgetController.deleteBudget);
+router.get('/expense/', budgetController.getTotalExpenses);
 
 module.exports = router;
