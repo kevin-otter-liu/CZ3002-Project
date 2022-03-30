@@ -1,9 +1,11 @@
 const Budget = require('../models/Budget');
+const Transaction = require('../models/Transaction');
 const {
   v4: uuid
 } = require('uuid');
 const e = require('cors');
 const {
+  getDifference,
   hasExceededBudget
 } = require('../libs/db-utils');
 const HttpError = require('../libs/http-error');
@@ -32,7 +34,7 @@ const createBudget = async (req, res, next) => {
     });
 
     let existing_category = await Budget.find({
-      user_id: user._id
+      user_id: user._id,
     }).distinct('category');
 
     if (existing_category.includes(req.body.category)) {
@@ -42,20 +44,18 @@ const createBudget = async (req, res, next) => {
     try {
       let data = await budget_data.save();
       if (data) {
-        formatted_budget = budget_data.toObject();
-        formatted_budget.amount = parseFloat(formatted_budget.amount);
+        formatted_budget = convertToFloat(budget_data);
         res.status(200).send(formatted_budget);
-        console.log("your data has been successfully saved.");
+        console.log('your data has been successfully saved.');
       } else {
         return next(new HttpError(423, 'budget_not_saved'));
       }
     } catch {
       return next(new HttpError(423, 'budget_not_saved'));
     }
-  };
+  }
 
   handleExceedBudget(user, req);
-
 };
 
 const updateBudget = async (req, res, next) => {
@@ -76,14 +76,14 @@ const updateBudget = async (req, res, next) => {
 
   try {
     var updatedBudget = await Budget.findOneAndUpdate({
-        budget_key: budget_key
+        budget_key: budget_key,
       }, {
         amount,
         category,
         period_start_date: start_date,
-        period_end_date: end_date
+        period_end_date: end_date,
       }, {
-        new: true
+        new: true,
       },
       (err, category) => {
         if (err) {
@@ -96,8 +96,7 @@ const updateBudget = async (req, res, next) => {
     console.log(error);
   }
   if (updatedBudget) {
-    formatted_budget = updatedBudget.toObject();
-    formatted_budget.amount = parseFloat(formatted_budget.amount);
+    formatted_budget = convertToFloat(updatedBudget);
   } else {
     return next(new HttpError(423, 'budget_not_updated'));
   }
@@ -120,22 +119,81 @@ const getBudget = async (req, res, next) => {
   //SORTED BY START DATE DESC ORDER
   let budgets = await Budget.find({}, {
     _id: 0,
-    __v: 0
-  }).sort(
-    '-period_start_date'
-  );
+    __v: 0,
+  }).sort('-period_start_date');
 
   if (budgets.length === 0) {
     return next(new HttpError(404, 'budget_not_found'));
   }
 
   budgets = budgets.map((budget, i) => {
-    formatted_budget = budget.toObject();
-    formatted_budget.amount = parseFloat(formatted_budget.amount);
+    formatted_budget = convertToFloat(budget);
     return formatted_budget;
   });
   res.status(200).send(budgets);
 };
+
+
+const getTotalExpenses = async (req, res, next) => {
+
+  let unique_categories = await Budget.find().distinct('category');
+  console.log(unique_categories);
+
+  var date = new Date();
+  var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+  let total_expense = await Transaction.aggregate(
+    [{
+        $match: {
+          $and: [{
+              date_of_transaction: {
+                $gte: firstDay,
+                $lte: lastDay
+              }
+            }, {
+              category: {
+                "$in": unique_categories
+              }
+            },
+            {
+              type: "expense"
+            }
+          ]
+        }
+      },
+      {
+        $group: {
+          _id: "$category",
+          total: {
+            $sum: "$amount"
+          }
+        }
+      }
+    ]);
+
+  if (total_expense) {
+    formatted_expense = total_expense.map((expense, i) => {
+      expense.total = parseFloat(expense.total);
+      return expense;
+    });
+    res.status(200).send(formatted_expense);
+
+  } else {
+    return next(new HttpError(423, 'error'));
+  }
+
+
+
+};
+
+
+function convertToFloat(budget) {
+  formatted_budget = budget.toObject();
+  formatted_budget.amount = parseFloat(formatted_budget.amount);
+  return formatted_budget;
+};
+
 
 
 const handleExceedBudget = async (user, req) => {
@@ -149,11 +207,17 @@ const handleExceedBudget = async (user, req) => {
     mailer.sendMail(
       user.email,
       `budget exceeded for category:${req.body.category}`,
-      'your budget has exceeded'
+      null, {
+        amount: await getDifference(user._id, req.body.category),
+        category: req.body.category,
+      }
     );
     console.log('noti mail sent');
   }
 };
+
+
+
 
 
 module.exports = {
@@ -161,4 +225,5 @@ module.exports = {
   updateBudget,
   deleteBudget,
   getBudget,
+  getTotalExpenses
 };

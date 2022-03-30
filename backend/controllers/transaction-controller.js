@@ -4,7 +4,7 @@ const HttpError = require('../libs/http-error');
 const { v4: uuid } = require('uuid');
 var dayjs = require('dayjs');
 let isSameOrBefore = require('dayjs/plugin/isSameOrBefore');
-const { hasExceededBudget } = require('../libs/db-utils');
+const { getDifference, hasExceededBudget } = require('../libs/db-utils');
 const mailer = require('../libs/mailer');
 
 const createTransaction = async (req, res, next) => {
@@ -58,8 +58,9 @@ const createTransaction = async (req, res, next) => {
   if (ExceedBudgetCheck === true) {
     mailer.sendMail(
       user.email,
-      `budget exceeded for category:${category}`,
-      'your budget has exceeded'
+      `Budget exceeded for ${category} category`,
+      'Your budget has exceeded',
+      { amount: await getDifference(user._id, category), category: category }
     );
     console.log('noti mail sent');
   }
@@ -79,7 +80,11 @@ const updateTransaction = async (req, res, next) => {
 
   // checking to only update fields that are empty
   for (let field in params) {
-    !field ? null : (transaction[field] = params[field]);
+    if (field === 'date_of_transaction') {
+      transaction['date_of_transaction'] = new Date(params[field]);
+    } else {
+      !field ? null : (transaction[field] = params[field]);
+    }
   }
   let savedTransaction;
   try {
@@ -105,8 +110,12 @@ const updateTransaction = async (req, res, next) => {
   if (ExceedBudgetCheck === true) {
     mailer.sendMail(
       user.email,
-      `budget exceeded for category:${category}`,
-      'your budget has exceeded'
+      `Budget exceeded for ${savedTransaction.category} category`,
+      'Your budget has exceeded',
+      {
+        amount: await getDifference(user._id, savedTransaction.category),
+        category: savedTransaction.category,
+      }
     );
     console.log('noti mail sent');
   }
