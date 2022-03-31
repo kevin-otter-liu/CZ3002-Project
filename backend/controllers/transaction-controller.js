@@ -51,7 +51,7 @@ const createTransaction = async (req, res, next) => {
 
   let ExceedBudgetCheck = await hasExceededBudget(user._id, category);
   if (ExceedBudgetCheck instanceof HttpError) {
-    return next(ExceedBudgetCheck);
+    console.log('user has no budget instantiated');
   }
 
   // send noti mail to user
