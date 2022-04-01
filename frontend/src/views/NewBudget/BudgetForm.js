@@ -55,6 +55,8 @@ const BudgetForm = (props) => {
         enteredDate.getMonth() + 1,
         0
       ),
+      // period_start_date: enteredDate,
+      // period_end_date: enteredDate,
       id: props.id,
     };
 
