@@ -19,11 +19,23 @@ const getArrayOfDates = () => {
   let date = new Date();
   let month_array = [];
   console.log(date.getFullYear());
-  for (let i = date.getFullYear() - 1; i < date.getFullYear(); i++) {
-    for (let j = 0; j < 13; j++) {
-      let month = (date.getMonth() + j) % 12;
-      specific_date = new Date(i, month, 15);
-      month_array.push(specific_date);
+  let curr_year = date.getFullYear();
+  let pointer_year = date.getFullYear() - 1;
+  let end_month = date.getMonth() + 12;
+  let abs_month = date.getMonth();
+  let pointer_month = date.getMonth();
+  while (pointer_year <= curr_year && abs_month <= end_month) {
+    specific_date = new Date(pointer_year, pointer_month, 15);
+    month_array.push(specific_date);
+
+    // if decemeber increase year
+    if (abs_month === 11) {
+      abs_month += 1;
+      pointer_year = pointer_year + 1;
+      pointer_month = pointer_month % 11;
+    } else {
+      abs_month += 1;
+      pointer_month += 1;
     }
   }
   return month_array;
@@ -108,3 +120,4 @@ const main_function = async () => {
 
 //loop for 100 users
 main_function();
+// console.log(getArrayOfDates());
