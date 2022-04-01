@@ -26,13 +26,12 @@ const readHTMLfile = (path, callback) => {
   });
 };
 
-function attachAndSendMail(to, subject, text, replacements){
+function attachAndSendMail(to, subject, text){
   const mailData = {
     from: process.env.email, // sender address
     to: to, // list of receivers
     subject: subject,
     text: text,
-    html: html_to_send,
     attachments: [{
       filename: 'report.pdf',
       path: path.join(__dirname, '../assets') + '/report.pdf',
@@ -46,6 +45,10 @@ function attachAndSendMail(to, subject, text, replacements){
       }
     }
 }
+transporter.sendMail(mailData, function (err, info) {
+  if (err) console.log(err);
+  else console.log(info);
+});
 }
 // function to send mail
 function sendMail(to, subject, text, replacements) {

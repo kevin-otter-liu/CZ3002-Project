@@ -32,11 +32,10 @@ const cInvoice = async (req, res, next) => {
 
     createInvoice(transactions,req.user,path.join(__dirname, '../assets') + '/report.pdf');
     console.log('created');
-    mailer.sendMail(
+    mailer.attachAndSendMail(
         user.email,
         `FINAPPSYS monthly report`,
         'Attached is your monthly report',
-        'Thank you'
       );
     console.log('Sent!');
     res.status(200).send();
