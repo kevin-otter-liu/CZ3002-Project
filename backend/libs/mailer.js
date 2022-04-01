@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const handlebars = require('handlebars');
+const path = require('path');
 
 // building the transporter
 // the account credentials
@@ -25,6 +26,27 @@ const readHTMLfile = (path, callback) => {
   });
 };
 
+function attachAndSendMail(to, subject, text, replacements){
+  const mailData = {
+    from: process.env.email, // sender address
+    to: to, // list of receivers
+    subject: subject,
+    text: text,
+    html: html_to_send,
+    attachments: [{
+      filename: 'report.pdf',
+      path: path.join(__dirname, '../assets') + '/report.pdf',
+      contentType: 'application/pdf'
+    }
+],function(err, info) {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log(info);
+      }
+    }
+}
+}
 // function to send mail
 function sendMail(to, subject, text, replacements) {
   readHTMLfile(process.cwd() + '/assets/noti-email.html', (err, html) => {
@@ -79,4 +101,5 @@ function sendMail(to, subject, text, replacements) {
 
 module.exports = {
   sendMail,
+  attachAndSendMail
 };

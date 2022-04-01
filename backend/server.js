@@ -39,6 +39,7 @@ const authApis = require('./routes/auth-routes');
 const transactionApis = require('./routes/transaction-routes');
 const budgetApis = require('./routes/budget-routes');
 const statsApis = require('./routes/stats-routes');
+const reportApis = require('./routes/report-routes');
 
 //registering routes
 app.use('/api/v1/auth', authApis);
@@ -49,6 +50,7 @@ app.use('/api/v1/transaction', transactionApis);
 app.use('/api/v1/transaction', transactionApis);
 app.use('/api/v1/budget', budgetApis);
 app.use('/api/v1/stats', statsApis);
+app.use('/api/v1/report', reportApis);
 
 // check for http errors to be passed
 app.use((error, req, res, next) => {
