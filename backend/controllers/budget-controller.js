@@ -70,31 +70,11 @@ const updateBudget = async (req, res, next) => {
     period_end_date
   } =
   req.body;
-
   const start_date = new Date(period_start_date);
   const end_date = new Date(period_end_date);
 
-  try {
-    var updatedBudget = await Budget.findOneAndUpdate({
-        budget_key: budget_key,
-      }, {
-        amount,
-        category,
-        period_start_date: start_date,
-        period_end_date: end_date,
-      }, {
-        new: true,
-      },
-      (err, category) => {
-        if (err) {
-          res.status(400);
-          res.send(err);
-        }
-      }
-    ).clone();
-  } catch (error) {
-    console.log(error);
-  }
+
+  var updatedBudget = updateBudgetFunc(start_date,end_date,budget_key,amount,category);
   if (updatedBudget) {
     formatted_budget = convertToFloat(updatedBudget);
   } else {
@@ -103,6 +83,31 @@ const updateBudget = async (req, res, next) => {
   res.status(200).send(formatted_budget);
   handleExceedBudget(user, req);
 };
+
+async function updateBudgetFunc(start_date,end_date,budget_key,amount,category){
+  try {
+    var updatedBudget = await Budget.findOneAndUpdate({
+    budget_key: budget_key,
+  }, {
+    amount,
+    category,
+    period_start_date: start_date,
+    period_end_date: end_date,
+  }, {
+    new: true,
+  },
+  (err, category) => {
+    if (err) {
+      res.status(400);
+      res.send(err);
+    }
+  }
+).clone();
+} catch (error) {
+console.log(error);
+}
+return updatedBudget;
+}
 
 const deleteBudget = async (req, res, next) => {
   try {
@@ -122,12 +127,17 @@ const getBudget = async (req, res, next) => {
     __v: 0,
   }).sort('-period_start_date');
 
+
   if (budgets.length === 0) {
     return next(new HttpError(404, 'budget_not_found'));
   }
 
   budgets = budgets.map((budget, i) => {
     formatted_budget = convertToFloat(budget);
+    var date = new Date();
+    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    formattedBudget = updateBudgetFunc(firstDay,lastDay,budget.budget_key,budget.amount,budget.category);
     return formatted_budget;
   });
 
