@@ -33,7 +33,7 @@ const Budget = () => {
     <>
       <Container>
         <Stack direction="horizontal" gap="1" className="mb-4">
-          <h1 className="me-auto">Budgets</h1>
+
         </Stack>
         <div
           style={{
@@ -43,12 +43,6 @@ const Budget = () => {
             alignItems: "flex-start",
           }}
         >
-          <BudgetCard
-            name="Transport"
-            gray
-            amount={200}
-            max={1000}
-          ></BudgetCard>
           
         </div>
       </Container>

@@ -10,11 +10,10 @@ const BudgetItem = (props) => {
     navigate(
       '/utils/budget/form', {
       state: {
-        type: props.type,
+
         date: props.date,
         category: props.category,
         amount: props.amount,
-        description: props.description,
         id: props.id,
         action: "edit"
       }
@@ -24,13 +23,7 @@ const BudgetItem = (props) => {
   return (
     <button className="budget-item" onClick={editBudgetHandler}>
       <h4 className="budget-item__category">{props.category}</h4>
-      <h4 className="budget-item__description">{props.description}</h4>
       <NumberFormat
-        className={
-          props.type === "income"
-            ? "budget-item__income"
-            : "budget-item__expense"
-        }
         value={props.amount}
         displayType={"text"}
         thousandSeparator={true}
