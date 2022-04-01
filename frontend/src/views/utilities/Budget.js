@@ -1,44 +1,52 @@
-import React from "react";
+import React from 'react'
 
-import { Button, Stack } from "react-bootstrap";
-import Container from "react-bootstrap/Container";
-//import AddBudgetModal from "../../../copy/src/views/Budget/AddBudgetModal";
-import BudgetCard from "../Budget/BudgetCard";
-//import { useState } from "react";
-//import { useBudgets } from "../../../copy/src/views/Budget/BudgetsContext";
+import { Fragment, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+
+// For UI
+import { IconButton } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import Budget from "../Budget/Budget";
+
+import { getBudgetsAsyn } from "store/Budget";
+
+
 
 const BudgetPage = () => {
-  // Matt to add Budget page here
 
-  //const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
-  //const { budgets, getBudgetExpenses } = useBudgets();
+  const navigate = useNavigate();
+
+  // Retrieve the Budget data
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getBudgetsAsyn());
+  }, []);
+
+  const addBudgetButtonHandler = (budget) => {
+    navigate(
+      '/utils/budget/form', {
+      state: {
+        period_start_date: new Date(),
+        period_end_date: new Date(),
+        category: "transport",
+        amount: "",
+        action: "add",
+      }
+      });
+  };
 
   return (
-    <>
-      <Container>
-        <Stack direction="horizontal" gap="1" className="mb-4">
-          <h1 className="me-auto">Budgets</h1>
-          <Button variant="primary">Add Budget</Button>
-        </Stack>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: "1rem",
-            alignItems: "flex-start",
-          }}
-        >
-          <BudgetCard
-            name="Transport"
-            gray
-            amount={1100}
-            max={1000}
-          ></BudgetCard>
-          
-        </div>
-      </Container>
-    </>
-  )
+    <Fragment>
+      <IconButton onClick={addBudgetButtonHandler} sx={{ "&:hover": {color: "gray"}}}>
+        <AddCircleIcon
+          sx={{ fontSize: 50 }}
+          style={{ position: "fixed", bottom: 50, right: 50 }}
+        />
+      </IconButton>
+      <Budget></Budget>
+    </Fragment>
+  );
 };
 
 export default BudgetPage;

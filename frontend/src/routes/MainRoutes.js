@@ -12,6 +12,7 @@ const UtilsTransaction = Loadable(lazy(() => import('views/utilities/Transaction
 const UtilsBudget = Loadable(lazy(() => import('views/utilities/Budget')));
 const UtilsProfile = Loadable(lazy(() => import('views/utilities/Profile')));
 const UtilsTransactionForm = Loadable(lazy(() => import('views/utilities/TransactionForm')));
+const UtilsBudgetForm = Loadable(lazy(() => import('views/utilities/BudgetForm')));
 
 
 
@@ -41,6 +42,10 @@ const MainRoutes = {
         {
             path: '/utils/transaction/form',
             element: <UtilsTransactionForm />
+        },
+        {
+            path: '/utils/budget/form',
+            element: <UtilsBudgetForm />
         }
     ]
 };
