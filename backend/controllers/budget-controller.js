@@ -131,7 +131,7 @@ const getBudget = async (req, res, next) => {
     return formatted_budget;
   });
 
-  totalExpense = await getTotalExpenses();
+  totalExpense = await getTotalExpenses(req.user);
   var output = merge(budgets,totalExpense);
   res.status(200).send(output);
 };
@@ -165,7 +165,7 @@ function merge(budget,expense) {
   }
   
 
-async function getTotalExpenses() {
+async function getTotalExpenses(user) {
 
   let unique_categories = await Budget.find().distinct('category');
   // console.log(unique_categories);
@@ -181,7 +181,8 @@ async function getTotalExpenses() {
               date_of_transaction: {
                 $gte: firstDay,
                 $lte: lastDay
-              }
+              },
+              user_id:user._id
             }, {
               category: {
                 "$in": unique_categories
