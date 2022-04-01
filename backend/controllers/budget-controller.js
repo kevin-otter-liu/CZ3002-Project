@@ -159,7 +159,9 @@ function merge(budget,expense) {
       }
       arrayList.push(obj);
   }
-  return arrayList;
+
+  return arrayList.sort((a, b) => parseFloat(b.total_expense) - parseFloat(a.total_expense));
+;
   }
   
 

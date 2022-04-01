@@ -4,14 +4,29 @@ import { Button, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 //import AddBudgetModal from "../../../copy/src/views/Budget/AddBudgetModal";
 import BudgetCard from "../Budget/BudgetCard";
-//import { useState } from "react";
+import { useState,useEffect } from "react";
 //import { useBudgets } from "../../../copy/src/views/Budget/BudgetsContext";
+import Axios from "axios";
+
+
 
 const BudgetPage = () => {
-  // Matt to add Budget page here
 
-  //const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
-  //const { budgets, getBudgetExpenses } = useBudgets();
+  const apiEndpoint = "http://localhost:5000/api/v1/budget";
+  const [budget,setBudget]=useState([])
+  useEffect(() => {
+        fetchComments();
+      }, [])
+      useEffect(() => {
+      }, [budget])
+      const fetchComments=async()=>{
+        const response=await Axios.get(apiEndpoint, { headers: 
+          { 
+            Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+            "Content-Type": "application/json", 
+          } });
+        setBudget(response.data);    
+      }
 
   return (
     <>
@@ -28,12 +43,16 @@ const BudgetPage = () => {
             alignItems: "flex-start",
           }}
         >
-          <BudgetCard
-            name="Transport"
-            gray
-            amount={1100}
-            max={1000}
-          ></BudgetCard>
+
+            {budget.map((budget) => (
+              <BudgetCard
+                key={budget.budget_key} // Make sure you use a unique key identifier for React
+                name={budget.category} // This is the url of the image for the current object inside this.state.news.YOUR_CURRENT_OBJECT
+                max={budget.amount}
+                amount={budget.total_expense}
+              />
+            ))}
+
           
         </div>
       </Container>
