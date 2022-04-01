@@ -130,14 +130,43 @@ const getBudget = async (req, res, next) => {
     formatted_budget = convertToFloat(budget);
     return formatted_budget;
   });
-  res.status(200).send(budgets);
+
+  totalExpense = await getTotalExpenses();
+  var output = merge(budgets,totalExpense);
+  res.status(200).send(output);
 };
 
+function merge(budget,expense) {
+  arrayList = [], obj_c_processed = [];
 
-const getTotalExpenses = async (req, res, next) => {
+  for (var i in budget) {
+      var obj = {user_id: budget[i].user_id, 
+                budget_key: budget[i].budget_key,
+                amount: budget[i].amount,
+                category: budget[i].category,
+                period_start_date: budget[i].period_start_date,
+                period_end_date: budget[i].period_end_date
+              };
+  
+      for (var j in expense) {
+          if (budget[i].category == expense[j]._id) {
+              obj.total_expense = expense[j].total;
+              obj_c_processed[expense[j]._id] = true;
+          }
+      }
+      if (obj.total_expense==null){
+        obj.total_expense=0;
+      }
+      arrayList.push(obj);
+  }
+  return arrayList;
+  }
+  
+
+async function getTotalExpenses() {
 
   let unique_categories = await Budget.find().distinct('category');
-  console.log(unique_categories);
+  // console.log(unique_categories);
 
   var date = new Date();
   var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -171,20 +200,15 @@ const getTotalExpenses = async (req, res, next) => {
         }
       }
     ]);
-
   if (total_expense) {
     formatted_expense = total_expense.map((expense, i) => {
       expense.total = parseFloat(expense.total);
       return expense;
     });
-    res.status(200).send(formatted_expense);
+    // console.log(formatted_expense);
 
-  } else {
-    return next(new HttpError(423, 'error'));
+    return formatted_expense;
   }
-
-
-
 };
 
 
