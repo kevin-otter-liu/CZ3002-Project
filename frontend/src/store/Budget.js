@@ -79,7 +79,7 @@ export const editBudgetAsyn = createAsyncThunk(
       amount: parseFloat(budget.amount),
       period_start_date: budget.start,
       period_end_date: budget.end,
-      category: budget.category, //i don't think should edit the category? just the amount
+      category: budget.category,
     });
 
     console.log(`Edit request body: ${data}`);
