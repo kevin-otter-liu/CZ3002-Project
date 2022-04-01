@@ -12,7 +12,8 @@ import Axios from "axios";
 
 const BudgetPage = () => {
 
-  const apiEndpoint = "http://localhost:5000/api/v1/budget";
+  // const apiEndpoint = "http://localhost:5000/api/v1/budget";
+  const apiEndpoint = "http://172.21.148.163/api/v1/budget";
   const [budget,setBudget]=useState([])
   useEffect(() => {
         fetchComments();
