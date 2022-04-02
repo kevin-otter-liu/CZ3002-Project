@@ -41,7 +41,6 @@ const createBudget = async (req, res, next) => {
       return next(new HttpError(423, 'existing_category_found'));
     }
 
-    try {
       let data = await budget_data.save();
       if (data) {
         formatted_budget = convertToFloat(budget_data);
@@ -50,9 +49,7 @@ const createBudget = async (req, res, next) => {
       } else {
         return next(new HttpError(423, 'budget_not_saved'));
       }
-    } catch {
-      return next(new HttpError(423, 'budget_not_saved'));
-    }
+    
   }
 
   handleExceedBudget(user, req);

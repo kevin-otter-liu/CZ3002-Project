@@ -35,17 +35,7 @@ export default function BudgetCard({ name, amount, max, gray }) {
           max={max}
           now={amount}
         />
-        <Stack direction="horizontal" gap="2" className="mt-4">
-          <Button variant="outline-secondary">View Expenses</Button>
-          <Button
-            /*onClick={() => {
-              deleteBudget(budget);
-            }}*/
-            variant="outline-danger"
-          >
-            Delete Budget
-          </Button>
-        </Stack>
+      
       </Card.Body>
     </Card>
   );
