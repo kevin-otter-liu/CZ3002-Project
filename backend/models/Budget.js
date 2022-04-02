@@ -13,7 +13,6 @@ const Budget = new Schema(
     category: {
       type: String,
       required: true,
-      unique: true,
     },
     period_start_date: {
       type: Date,
@@ -27,5 +26,6 @@ const Budget = new Schema(
   { timestamps: true }
 );
 
+Budget.index({ user_id: 1, category: 1 }, { unique: true });
 Budget.plugin(uniqueValidator);
 module.exports = mongoose.model('Budget', Budget);

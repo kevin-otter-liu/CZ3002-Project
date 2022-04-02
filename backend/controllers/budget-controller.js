@@ -52,7 +52,7 @@ const createBudget = async (req, res, next) => {
     
   }
 
-  handleExceedBudget(user, req);
+  handleExceedBudget(user, req, next);
 };
 
 const updateBudget = async (req, res, next) => {
@@ -71,14 +71,15 @@ const updateBudget = async (req, res, next) => {
   const end_date = new Date(period_end_date);
 
 
-  var updatedBudget = updateBudgetFunc(start_date,end_date,budget_key,amount,category);
+  var updatedBudget = await updateBudgetFunc(start_date,end_date,budget_key,amount,category);
   if (updatedBudget) {
     formatted_budget = convertToFloat(updatedBudget);
   } else {
     return next(new HttpError(423, 'budget_not_updated'));
   }
+  var current_date = new Date();
   res.status(200).send(formatted_budget);
-  handleExceedBudget(user, req);
+  await handleExceedBudget(user, req, next);
 };
 
 async function updateBudgetFunc(start_date,end_date,budget_key,amount,category){
@@ -119,7 +120,7 @@ const deleteBudget = async (req, res, next) => {
 
 const getBudget = async (req, res, next) => {
   //SORTED BY START DATE DESC ORDER
-  let budgets = await Budget.find({}, {
+  let budgets = await Budget.find({user_id : req.user._id}, {
     _id: 0,
     __v: 0,
   }).sort('-period_start_date');
@@ -130,12 +131,12 @@ const getBudget = async (req, res, next) => {
   }
 
   budgets = budgets.map((budget, i) => {
-    formatted_budget = convertToFloat(budget);
-    var date = new Date();
-    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    formattedBudget = updateBudgetFunc(firstDay,lastDay,budget.budget_key,budget.amount,budget.category);
-    return formatted_budget;
+      formatted_budget = convertToFloat(budget);
+      var date = new Date();
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      formattedBudget = updateBudgetFunc(firstDay,lastDay,budget.budget_key,budget.amount,budget.category);
+      return formatted_budget;  
   });
 
   totalExpense = await getTotalExpenses(req.user);
@@ -215,7 +216,6 @@ async function getTotalExpenses(user) {
       expense.total = parseFloat(expense.total);
       return expense;
     });
-    // console.log(formatted_expense);
 
     return formatted_expense;
   }
@@ -230,8 +230,9 @@ function convertToFloat(budget) {
 
 
 
-const handleExceedBudget = async (user, req) => {
+const handleExceedBudget = async (user, req, next) => {
   let ExceedBudgetCheck = await hasExceededBudget(user._id, req.body.category);
+  console.log(ExceedBudgetCheck);
   if (ExceedBudgetCheck instanceof HttpError) {
     return next(ExceedBudgetCheck);
   }
