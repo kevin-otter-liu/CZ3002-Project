@@ -8,6 +8,7 @@ toast.configure();
 
 const transactionInitialState = {
   transactions: [],
+  statistics: [],
 };
 
 // Actions
@@ -105,6 +106,24 @@ export const editTransactionAsyn = createAsyncThunk(
     } 
   }
 );
+
+export const getStatisticsAsyn = createAsyncThunk(
+  "transactions/getStatisticsAsyn",
+  async () => {
+    const resp = await fetch("http://172.21.148.163/api/v1/stats", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+      },
+    });
+    if (resp.ok) {
+      console.log(resp);
+      const stats = await resp.json();
+      return { stats };
+    }
+  }
+);
+
 // Reducer
 export const TransactionSlice = createSlice({
   name: "transactions",
@@ -141,6 +160,9 @@ export const TransactionSlice = createSlice({
         autoClose: 750,
       });
     },
+    [getStatisticsAsyn.fulfilled]: (state, action) => {
+      state.statistics = action.payload.stats;
+    }
   },
 });
 export const TransactionActions = TransactionSlice.actions;

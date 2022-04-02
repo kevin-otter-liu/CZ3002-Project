@@ -1,20 +1,52 @@
-import React from "react";
+import React from 'react'
+
+import { Fragment, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+
+// For UI
+import { IconButton } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import Budget from "../Budget/Budget";
+import BudgetItem from "../Budget/BudgetItem";
+
+import { getBudgetsAsyn } from "store/Budget";
+
 
 import { Button, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 //import AddBudgetModal from "../../../copy/src/views/Budget/AddBudgetModal";
 import BudgetCard from "../Budget/BudgetCard";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 //import { useBudgets } from "../../../copy/src/views/Budget/BudgetsContext";
 import Axios from "axios";
 
 
 
 const BudgetPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBudgetsAsyn());
+  }, []);
+
+  const addBudgetButtonHandler = (budget) => {
+    navigate(
+      '/utils/budget/form', {
+      state: {
+        period_start_date: new Date(),
+        period_end_date: new Date(),
+        category: "transport",
+        amount: "",
+        action: "add",
+            }
+      });
+  };
 
   // const apiEndpoint = "http://localhost:5000/api/v1/budget";
   const apiEndpoint = "http://172.21.148.163/api/v1/budget";
-  const [budget,setBudget]=useState([])
+  const [budget, setBudget]=useState([])
   useEffect(() => {
         fetchComments();
       }, [])
@@ -32,9 +64,8 @@ const BudgetPage = () => {
   return (
     <>
       <Container>
-        <Stack direction="horizontal" gap="1" className="mb-4">
-          <h1 className="me-auto">Budgets</h1>
-          <Button variant="primary">Add Budget</Button>
+        <Stack direction="vertical" gap="3" className="mb-4">
+          
         </Stack>
         <div
           style={{
@@ -57,7 +88,17 @@ const BudgetPage = () => {
           
         </div>
       </Container>
+      <Fragment>
+      <IconButton onClick={addBudgetButtonHandler} sx={{ "&:hover": {color: "gray"}}}>
+        <AddCircleIcon
+          sx={{ fontSize: 50 }}
+          style={{ position: "fixed", bottom: 50, right: 50 }}
+        />
+      </IconButton>
+      <Budget></Budget>
+    </Fragment>
     </>
+    
   )
 };
 
