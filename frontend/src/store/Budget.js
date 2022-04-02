@@ -32,8 +32,8 @@ export const addBudgetAsyn = createAsyncThunk(
     var data = JSON.stringify({
       category: budget.category,
       amount: parseFloat(budget.amount),
-      period_start_date: budget.start,
-      period_end_date: budget.end,
+      period_start_date: budget.period_start_date,
+      period_end_date: budget.period_end_date,
     });
     // console.log(data);
     const requestOptions = {

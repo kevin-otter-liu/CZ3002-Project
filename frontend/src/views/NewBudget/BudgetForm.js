@@ -22,7 +22,7 @@ const BudgetForm = (props) => {
   } = useForm();
 
   const [enteredDate, setEnteredDate] = useState(
-    props.date.toLocaleDateString("en-CA")
+    // props.date.toLocaleDateString("en-CA")
   );
   const [enteredCategory, setEnteredCategory] = useState(props.category);
   const [enteredAmount, setEnteredAmount] = useState(props.amount);
@@ -47,13 +47,13 @@ const BudgetForm = (props) => {
       category: enteredCategory,
       amount: enteredAmount,
       period_start_date: new Date(
-        enteredDate.getFullYear(),
-        enteredDate.getMonth(),
+        new Date(enteredDate).getFullYear(),
+        new Date(enteredDate).getMonth(),
         1
       ),
       period_end_date: new Date(
-        enteredDate.getFullYear(),
-        enteredDate.getMonth() + 1,
+        new Date(enteredDate).getFullYear(),
+        new Date(enteredDate).getMonth() + 1,
         0
       ),
       // period_start_date: enteredDate,
