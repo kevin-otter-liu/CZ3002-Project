@@ -33,7 +33,7 @@ function generateCustomerInformation(doc, user) {
   doc
     .fillColor("#444444")
     .fontSize(20)
-    .text("Invoice", 50, 160);
+    .text("Monthly Statement", 50, 160);
 
   generateHr(doc, 185);
 
