@@ -10,8 +10,8 @@ const BudgetItem = (props) => {
     navigate(
       '/utils/budget/form', {
       state: {
-
-        date: props.date,
+        period_start_date: props.date,
+        period_end_date: props.date,
         category: props.category,
         amount: props.amount,
         id: props.id,
@@ -25,9 +25,7 @@ const BudgetItem = (props) => {
       <h4 className="budget-item__category">{props.category}</h4>
       <NumberFormat
         value={props.amount}
-        displayType={"text"}
         thousandSeparator={true}
-        prefix={"$"}
         decimalScale={2}
         fixedDecimalScale={true}
       />

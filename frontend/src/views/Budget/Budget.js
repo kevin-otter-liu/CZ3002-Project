@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
+import BudgetItem from "./BudgetItem";
 
 
 import BudgetCard from "../Budget/BudgetCard";
@@ -12,6 +12,7 @@ import "./Budget.css";
 import { Button, Stack } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import * as utils from "./Util";
+import BudgetDay from "./BudgetDay.js";
 
 
 const Budget = () => {
@@ -30,24 +31,15 @@ const Budget = () => {
 
 
   return (
-    <>
-      <Container>
-        <Stack direction="horizontal" gap="1" className="mb-4">
-
-        </Stack>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: "1rem",
-            alignItems: "flex-start",
-          }}
-        >
-          
-        </div>
-      </Container>
-    </>
-  )
+    <div className="budget">
+      {allDates.map((date) => (
+        <BudgetDay
+          key={date}
+          date={date}
+        ></BudgetDay>
+      ))}
+    </div>
+  );
 };
 
 export default Budget;

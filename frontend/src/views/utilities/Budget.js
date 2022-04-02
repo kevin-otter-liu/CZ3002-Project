@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { IconButton } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Budget from "../Budget/Budget";
+import BudgetItem from "../Budget/BudgetItem";
 
 import { getBudgetsAsyn } from "store/Budget";
 
