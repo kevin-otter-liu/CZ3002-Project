@@ -124,15 +124,13 @@ const getBudget = async (req, res, next) => {
 
   var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
   var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  console.log(firstDay);
-  console.log(lastDay);
   
   var updatedBudget = await Budget.updateMany(
     {$and:[
       {user_id: req.user._id},
       {budget_end_date :{$lte:date}}
     ]}
-    , {$set: {period_start_date: firstDay,period_end_date: lastDay}})
+    , {$set: {period_start_date: firstDay,period_end_date: lastDay}});
 
   
   //SORTED BY START DATE DESC ORDER
