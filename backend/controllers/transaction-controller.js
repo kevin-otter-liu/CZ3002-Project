@@ -159,7 +159,6 @@ const getTransaction = async (req, res, next) => {
   }
 
   res.status(200).send(transactions);
-  next();
 };
 
 const getTransactionsInRange = async (req, res, next) => {
