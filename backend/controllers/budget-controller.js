@@ -119,6 +119,20 @@ const deleteBudget = async (req, res, next) => {
 };
 
 const getBudget = async (req, res, next) => {
+  //update budget
+  date = new Date();
+
+  var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  
+  var updatedBudget = await Budget.updateMany(
+    {$and:[
+      {user_id: req.user._id},
+      {budget_end_date :{$lte:date}}
+    ]}
+    , {$set: {period_start_date: firstDay,period_end_date: lastDay}});
+
+  
   //SORTED BY START DATE DESC ORDER
   let budgets = await Budget.find({user_id : req.user._id}, {
     _id: 0,
@@ -132,10 +146,6 @@ const getBudget = async (req, res, next) => {
 
   budgets = budgets.map((budget, i) => {
       formatted_budget = convertToFloat(budget);
-      var date = new Date();
-      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-      formattedBudget = updateBudgetFunc(firstDay,lastDay,budget.budget_key,budget.amount,budget.category);
       return formatted_budget;  
   });
 
@@ -249,6 +259,7 @@ const handleExceedBudget = async (user, req, next) => {
     );
     console.log('noti mail sent');
   }
+  next();
 };
 
 
