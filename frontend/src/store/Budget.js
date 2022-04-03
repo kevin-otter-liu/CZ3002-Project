@@ -26,6 +26,7 @@ export const getBudgetsAsyn = createAsyncThunk(
     }
   }
 );
+
 export const addBudgetAsyn = createAsyncThunk(
   "budgets/addBudgetAsyn",
   async (budget) => {
@@ -56,36 +57,44 @@ export const addBudgetAsyn = createAsyncThunk(
 export const deleteBudgetAsyn = createAsyncThunk(
   "budgets/deleteBudgetAsyn",
   async (budget_id) => {
+    var data = JSON.stringify({
+      budget_key: budget_id,
+    });
+
+    console.log(`Delete request body: ${data}`);
+
     const resp = await fetch(
-      `http://172.21.148.163/api/v1/budget/${budget_id}`,
+      `http://172.21.148.163/api/v1/budget`,
       {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         },
+        body: data,
       }
     );
+    console.log(resp);
     if (resp.ok) {
       // const budget = resp.json();
       return { budget_id };
     }
   }
 );
+
 export const editBudgetAsyn = createAsyncThunk(
   "budgets/editBudgetAsyn",
   async (budget) => {
     var data = JSON.stringify({
       budget_key: budget.id,
       amount: parseFloat(budget.amount),
-      period_start_date: budget.start,
-      period_end_date: budget.end,
+      period_start_date: budget.start.toLocaleDateString("en-CA"),
+      period_end_date: budget.end.toLocaleDateString("en-CA"),
       category: budget.category,
     });
-
     console.log(`Edit request body: ${data}`);
 
     const requestOptions = {
-      method: "PUT", //is this correct?
+      method: "PATCH", 
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         "Content-Type": "application/json",
@@ -99,6 +108,7 @@ export const editBudgetAsyn = createAsyncThunk(
     } 
   }
 );
+
 // Reducer
 export const BudgetSlice = createSlice({
   name: "budgets",

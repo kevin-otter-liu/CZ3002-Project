@@ -1,8 +1,6 @@
 import NumberFormat from "react-number-format";
 import { useNavigate } from "react-router-dom";
 
-import "./BudgetItem.css";
-
 const BudgetItem = (props) => {
 
   const navigate = useNavigate();

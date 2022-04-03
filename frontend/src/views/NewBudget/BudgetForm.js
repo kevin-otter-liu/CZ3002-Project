@@ -22,7 +22,7 @@ const BudgetForm = (props) => {
   } = useForm();
 
   const [enteredDate, setEnteredDate] = useState(
-    // props.date.toLocaleDateString("en-CA")
+    new Date().toLocaleDateString("en-CA")
   );
   const [enteredCategory, setEnteredCategory] = useState(props.category);
   const [enteredAmount, setEnteredAmount] = useState(props.amount);
@@ -39,6 +39,7 @@ const BudgetForm = (props) => {
   const amountChangeHandler = (event) => {
     setEnteredAmount(event.target.value);
   };
+
 
   const onSubmit = (event) => {
     // event.preventDefault();
@@ -111,7 +112,7 @@ const BudgetForm = (props) => {
           </select>
         </div>
         <div className="new-budget__control">
-          <label>Amount</label>
+          <label>Maximum Amount</label>
           <input
             type="number"
             min="0.01"
