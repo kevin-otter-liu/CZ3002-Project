@@ -76,6 +76,7 @@ const getDifference = async (user_id, category) => {
   let budget = await Budget.findOne({
     user_id: user_id,
     category: category,
+    type: 'expense',
     period_start_date: { $lte: current_date },
     period_end_date: { $gt: current_date },
   });
@@ -93,6 +94,7 @@ const getDifference = async (user_id, category) => {
         },
         user_id: user_id,
         category: category,
+        type: 'expense',
       },
     },
     {
