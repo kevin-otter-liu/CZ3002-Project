@@ -71,7 +71,7 @@ const updateBudget = async (req, res, next) => {
   const end_date = new Date(period_end_date);
 
 
-  var updatedBudget = await updateBudgetFunc(start_date,end_date,budget_key,amount,category,user);
+  var updatedBudget = await updateBudgetFunc(start_date,end_date,budget_key,amount,category);
   if (updatedBudget) {
     formatted_budget = convertToFloat(updatedBudget);
   } else {
@@ -82,10 +82,9 @@ const updateBudget = async (req, res, next) => {
   await handleExceedBudget(user, req, next);
 };
 
-async function updateBudgetFunc(start_date,end_date,budget_key,amount,category,user){
+async function updateBudgetFunc(start_date,end_date,budget_key,amount,category){
   try {
     var updatedBudget = await Budget.findOneAndUpdate({
-    user_id:user._id,
     budget_key: budget_key,
   }, {
     amount,
