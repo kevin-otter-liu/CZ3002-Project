@@ -57,15 +57,14 @@ const BudgetForm = (props) => {
         new Date(enteredDate).getMonth() + 1,
         0
       ),
-      // period_start_date: enteredDate,
-      // period_end_date: enteredDate,
       id: props.id,
     };
-
+    
     // TODO: Add in the following handlers
     if (action === "add") {
       dispatch(addBudgetAsyn(budget));
     } else if (action === "edit") {
+      console.log("Calling the edit budget api");
       dispatch(editBudgetAsyn(budget));
     }
     navigate(-1);
