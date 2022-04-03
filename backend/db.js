@@ -1,8 +1,6 @@
 //db.js
 const mongoose = require('mongoose');
 require('dotenv').config();
-// TODO : unable to update env variable
-process.env.NODE_ENV = 'production';
 let dbUri;
 // use mongo atlas db in prod and local mongo on dev
 process.env.NODE_ENV === 'production' ? (dbUri = process.env.MONGO_URL) : null;
