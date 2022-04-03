@@ -109,13 +109,19 @@ return updatedBudget;
 
 const deleteBudget = async (req, res, next) => {
   try {
-    await Budget.findOneAndRemove({
+    let deleteBudget = await Budget.findOneAndRemove({
       budget_key: req.body.budget_key,
     });
+    console.log(deleteBudget);
+    if (!deleteBudget){
+      res.status(404).send({'message':'budget_not_found'});
+    }else{
+      res.status(200).send();
+    }
+
   } catch (error) {
     console.log(error);
   }
-  res.status(200).send();
 };
 
 const getBudget = async (req, res, next) => {
@@ -244,7 +250,7 @@ const handleExceedBudget = async (user, req, next) => {
   let ExceedBudgetCheck = await hasExceededBudget(user._id, req.body.category);
   console.log(ExceedBudgetCheck);
   if (ExceedBudgetCheck instanceof HttpError) {
-    return next(ExceedBudgetCheck);
+    console.log('user has no budget instantiated');
   }
 
   // send noti mail to user
