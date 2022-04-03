@@ -12,6 +12,9 @@ const hasExceededBudget = async (user_id, category) => {
   }
 
   let current_date = new Date();
+  // change
+  let firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
   let budget = await Budget.findOne({
     user_id: user_id,
@@ -33,6 +36,7 @@ const hasExceededBudget = async (user_id, category) => {
         },
         user_id: user_id,
         category: category,
+        type: 'expense',
       },
     },
     {
@@ -77,7 +81,7 @@ const getDifference = async (user_id, category) => {
   });
 
   if (!budget) {
-    throw new Error('no budget found');
+    console.log('no budget found');
   }
 
   let transactions_sum = await Transaction.aggregate([
@@ -103,7 +107,7 @@ const getDifference = async (user_id, category) => {
   let transactions_sum_float;
 
   if (transactions_sum.length < 1) {
-    throw new Error('no transactions made');
+    console.log('no transactions made');
   }
 
   transactions_sum_float = parseFloat(transactions_sum[0].total_amount);
