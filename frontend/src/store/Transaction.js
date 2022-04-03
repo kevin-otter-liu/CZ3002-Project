@@ -117,7 +117,6 @@ export const getStatisticsAsyn = createAsyncThunk(
       },
     });
     if (resp.ok) {
-      console.log(resp);
       const stats = await resp.json();
       return { stats };
     }

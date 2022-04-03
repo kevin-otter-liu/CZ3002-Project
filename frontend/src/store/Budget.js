@@ -1,3 +1,4 @@
+import { ConstructionOutlined } from "@mui/icons-material";
 import { propsToClassKey } from "@mui/styles";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -26,6 +27,7 @@ export const getBudgetsAsyn = createAsyncThunk(
     }
   }
 );
+
 export const addBudgetAsyn = createAsyncThunk(
   "budgets/addBudgetAsyn",
   async (budget) => {
@@ -49,43 +51,61 @@ export const addBudgetAsyn = createAsyncThunk(
       requestOptions
     );
 
-    const newbudget = await response.json();
-    return { newbudget };
+    // const newbudget = await response.json();
+    if (response.ok) {
+      const newbudget = await response.json();
+      return { newbudget };
+    }
   }
 );
 export const deleteBudgetAsyn = createAsyncThunk(
   "budgets/deleteBudgetAsyn",
   async (budget_id) => {
+    var data = JSON.stringify({
+      budget_key: budget_id
+    });
+
+    console.log(`Delete request body: ${data}`);
+
     const resp = await fetch(
-      `http://172.21.148.163/api/v1/budget/${budget_id}`,
+      `http://172.21.148.163/api/v1/budget`,
       {
-        method: "DELETE",
+        method: "delete",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          "Content-Type": "application/json",
         },
+        body: data,
       }
     );
+    console.log(resp);
     if (resp.ok) {
       // const budget = resp.json();
+      console.log(budget_id);
       return { budget_id };
+    } else {
+
     }
   }
 );
+
 export const editBudgetAsyn = createAsyncThunk(
   "budgets/editBudgetAsyn",
   async (budget) => {
+    console.log("test");
+    console.log(budget);
     var data = JSON.stringify({
       budget_key: budget.id,
       amount: parseFloat(budget.amount),
-      period_start_date: budget.start,
-      period_end_date: budget.end,
+      period_start_date: budget.period_start_date.toLocaleDateString("en-CA"),
+      period_end_date: budget.period_end_date.toLocaleDateString("en-CA"),
       category: budget.category,
     });
 
     console.log(`Edit request body: ${data}`);
 
     const requestOptions = {
-      method: "PUT", //is this correct?
+      method: "PUT", 
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
         "Content-Type": "application/json",
@@ -99,6 +119,9 @@ export const editBudgetAsyn = createAsyncThunk(
     } 
   }
 );
+
+
+
 // Reducer
 export const BudgetSlice = createSlice({
   name: "budgets",
@@ -125,6 +148,7 @@ export const BudgetSlice = createSlice({
       });
     },
     [editBudgetAsyn.fulfilled]: (state, action) => {
+      console.log(action.payload.budget_id);
       let index = state.budgets.findIndex(
         (elem) =>
           elem.budget_key ===

@@ -22,7 +22,7 @@ const BudgetForm = (props) => {
   } = useForm();
 
   const [enteredDate, setEnteredDate] = useState(
-    // props.date.toLocaleDateString("en-CA")
+    new Date().toLocaleDateString("en-CA")
   );
   const [enteredCategory, setEnteredCategory] = useState(props.category);
   const [enteredAmount, setEnteredAmount] = useState(props.amount);
@@ -40,6 +40,7 @@ const BudgetForm = (props) => {
     setEnteredAmount(event.target.value);
   };
 
+
   const onSubmit = (event) => {
     // event.preventDefault();
 
@@ -56,15 +57,14 @@ const BudgetForm = (props) => {
         new Date(enteredDate).getMonth() + 1,
         0
       ),
-      // period_start_date: enteredDate,
-      // period_end_date: enteredDate,
       id: props.id,
     };
-
+    
     // TODO: Add in the following handlers
     if (action === "add") {
       dispatch(addBudgetAsyn(budget));
     } else if (action === "edit") {
+      console.log("Calling the edit budget api");
       dispatch(editBudgetAsyn(budget));
     }
     navigate(-1);
@@ -111,7 +111,7 @@ const BudgetForm = (props) => {
           </select>
         </div>
         <div className="new-budget__control">
-          <label>Amount</label>
+          <label>Maximum Amount</label>
           <input
             type="number"
             min="0.01"
