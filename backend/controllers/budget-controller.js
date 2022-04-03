@@ -71,7 +71,7 @@ const updateBudget = async (req, res, next) => {
   const end_date = new Date(period_end_date);
 
 
-  var updatedBudget = await updateBudgetFunc(start_date,end_date,budget_key,amount,category);
+  var updatedBudget = await updateBudgetFunc(start_date,end_date,budget_key,amount,category,user);
   if (updatedBudget) {
     formatted_budget = convertToFloat(updatedBudget);
   } else {
@@ -82,9 +82,10 @@ const updateBudget = async (req, res, next) => {
   await handleExceedBudget(user, req, next);
 };
 
-async function updateBudgetFunc(start_date,end_date,budget_key,amount,category){
+async function updateBudgetFunc(start_date,end_date,budget_key,amount,category,user){
   try {
     var updatedBudget = await Budget.findOneAndUpdate({
+    user_id:user._id,
     budget_key: budget_key,
   }, {
     amount,
@@ -244,7 +245,7 @@ const handleExceedBudget = async (user, req, next) => {
   let ExceedBudgetCheck = await hasExceededBudget(user._id, req.body.category);
   console.log(ExceedBudgetCheck);
   if (ExceedBudgetCheck instanceof HttpError) {
-    return next(ExceedBudgetCheck);
+    console.log('user has no budget instantiated');
   }
 
   // send noti mail to user
