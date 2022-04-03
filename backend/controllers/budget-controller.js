@@ -110,13 +110,19 @@ return updatedBudget;
 
 const deleteBudget = async (req, res, next) => {
   try {
-    await Budget.findOneAndRemove({
+    let deleteBudget = await Budget.findOneAndRemove({
       budget_key: req.body.budget_key,
     });
+    console.log(deleteBudget);
+    if (!deleteBudget){
+      res.status(404).send({'message':'budget_not_found'});
+    }else{
+      res.status(200).send();
+    }
+
   } catch (error) {
     console.log(error);
   }
-  res.status(200).send();
 };
 
 const getBudget = async (req, res, next) => {
