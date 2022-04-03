@@ -33,14 +33,14 @@ const utilities = {
             icon: icons.AccountBalanceWalletIcon,
             breadcrumbs: false
         },
-        {
-            id: 'util-profile',
-            title: 'Profile',
-            type: 'item',
-            url: '/utils/profile',
-            icon: icons.PermIdentityOutlinedIcon,
-            breadcrumbs: false
-        }
+        // {
+        //     id: 'util-profile',
+        //     title: 'Profile',
+        //     type: 'item',
+        //     url: '/utils/profile',
+        //     icon: icons.PermIdentityOutlinedIcon,
+        //     breadcrumbs: false
+        // }
     ]
 };
 
