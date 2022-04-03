@@ -98,24 +98,22 @@ const wrapper_func = async (token, auth_response) => {
 const main_function = async () => {
   console.log('INJECTING DUMMY DATA INTO DB ...');
 
-  for (let i = 0; i < 100; i++) {
-    // signup a user
-    let auth_response = await ax.post('auth/sign-up', {
-      email: `testuser${i}@gmail.com`,
-      password: '12345678901234567890',
-    });
+  // signup a user
+  let auth_response = await ax.post('auth/sign-up', {
+    email: `kevinliusingapore@gmail.com`,
+    password: '12345678901234567890',
+  });
 
-    if (auth_response.status !== 200) {
-      console.log(auth_response.message);
-      process.exit(1);
-    }
-    console.log(`sign up successful as ${auth_response.data.email}`);
-
-    let { user_key, token } = auth_response.data;
-
-    //for each month from today
-    let result = await wrapper_func(token, auth_response);
+  if (auth_response.status !== 200) {
+    console.log(auth_response.message);
+    process.exit(1);
   }
+  console.log(`sign up successful as ${auth_response.data.email}`);
+
+  let { user_key, token } = auth_response.data;
+
+  //for each month from today
+  let result = await wrapper_func(token, auth_response);
 };
 
 //loop for 100 users
