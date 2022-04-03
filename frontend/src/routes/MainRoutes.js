@@ -10,7 +10,7 @@ const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')))
 // utilities routing
 const UtilsTransaction = Loadable(lazy(() => import('views/utilities/Transaction')));
 const UtilsBudget = Loadable(lazy(() => import('views/utilities/Budget')));
-const UtilsProfile = Loadable(lazy(() => import('views/utilities/Profile')));
+// const UtilsProfile = Loadable(lazy(() => import('views/utilities/Profile')));
 const UtilsTransactionForm = Loadable(lazy(() => import('views/utilities/TransactionForm')));
 const UtilsBudgetForm = Loadable(lazy(() => import('views/utilities/BudgetForm')));
 
@@ -35,10 +35,10 @@ const MainRoutes = {
             path: '/utils/budget',
             element: <UtilsBudget />
         },
-        {
-            path: '/utils/profile',
-            element: <UtilsProfile />
-        },
+        // {
+        //     path: '/utils/profile',
+        //     element: <UtilsProfile />
+        // },
         {
             path: '/utils/transaction/form',
             element: <UtilsTransactionForm />
