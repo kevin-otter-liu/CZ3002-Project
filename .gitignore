@@ -6,6 +6,9 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# github assets
+assets
+
 #configs
 backend/configs
 !backend/configs/examples
