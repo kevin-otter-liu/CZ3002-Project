@@ -25,8 +25,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/kevin-otter-liu/CZ3002-Project">
+    <img src="assets/Finappsys.svg" alt="Logo" width="640" height="640">
   </a>
 
 <h3 align="center">Finappsys</h3>
@@ -34,21 +34,19 @@
   <p align="center">
     A 1 stop webapp platform for all your financial tracking and statistics
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://www.youtube.com/watch?v=iG0Q7lon6Vk">View Demo</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/kevin-otter-liu/CZ3002-Project/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/kevin-otter-liu/CZ3002-Project/issues">Request Feature</a>
   </p>
 </div>
 
 # Finappsys Usage
-https://user-images.githubusercontent.com/56191188/161533463-5b7577bf-3496-4052-8e89-30adcd8225cc.mp4
-
-
+Watch the Youtube Video here:
+</br>
+</br>
+[![Watch the Video](https://img.youtube.com/vi/iG0Q7lon6Vk/maxresdefault.jpg)](https://www.youtube.com/watch?v=iG0Q7lon6Vk)
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -67,12 +65,7 @@ https://user-images.githubusercontent.com/56191188/161533463-5b7577bf-3496-4052-
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -80,11 +73,7 @@ https://user-images.githubusercontent.com/56191188/161533463-5b7577bf-3496-4052-
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 Finappsys is a webapp that aims to aid young adults to be in control of their personal finances by providing a one-stop platform where users can manage their expenditure and budget their spending
-`github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -151,17 +140,6 @@ Don't forget to give the project a star! Thanks again!
 5. Open a Pull Request
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- CONTACT -->
 ## Contact
