@@ -145,6 +145,7 @@ Don't forget to give the project a star! Thanks again!
 ## Contact
 
 Kevin Liu - [@big-otter-codes](https://www.linkedin.com/in/kevin-liu-kai-big-otter-codes/) - kevinliudevelopes@gmail.com
+Kondreddy Saitejareddy - [@saiteja-kondreddy](https://www.linkedin.com/in/saitejareddy-kondreddy/) - reddysaiteja5@gmail.com
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
