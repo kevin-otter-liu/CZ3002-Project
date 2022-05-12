@@ -1,8 +1,8 @@
-import { propsToClassKey } from "@mui/styles";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { propsToClassKey } from '@mui/styles';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 toast.configure();
 
@@ -13,14 +13,17 @@ const transactionInitialState = {
 
 // Actions
 export const getTransactionsAsyn = createAsyncThunk(
-  "transactions/getTransactionsAsyn",
+  'transactions/getTransactionsAsyn',
   async () => {
-    const resp = await fetch("http://172.21.148.163/api/v1/transaction", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-      },
-    });
+    const resp = await fetch(
+      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/transaction`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+        },
+      }
+    );
     if (resp.ok) {
       const transactions = await resp.json();
       return { transactions };
@@ -28,28 +31,28 @@ export const getTransactionsAsyn = createAsyncThunk(
   }
 );
 export const addTransactionAsyn = createAsyncThunk(
-  "transactions/addTransactionAsyn",
+  'transactions/addTransactionAsyn',
   async (transaction) => {
     var data = JSON.stringify({
       description: transaction.description,
       type: transaction.type,
       category: transaction.category,
       amount: parseFloat(transaction.amount),
-      currency: "SGD",
-      payment_method: "cash",
+      currency: 'SGD',
+      payment_method: 'cash',
       date_of_transaction: transaction.date,
     });
     // console.log(data);
     const requestOptions = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+        'Content-Type': 'application/json',
       },
       body: data,
     };
     const response = await fetch(
-      "http://172.21.148.163/api/v1/transaction",
+      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/transaction`,
       requestOptions
     );
 
@@ -58,14 +61,14 @@ export const addTransactionAsyn = createAsyncThunk(
   }
 );
 export const deleteTransactionAsyn = createAsyncThunk(
-  "transactions/deleteTransactionAsyn",
+  'transactions/deleteTransactionAsyn',
   async (transaction_id) => {
     const resp = await fetch(
-      `http://172.21.148.163/api/v1/transaction/${transaction_id}`,
+      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/transaction/${transaction_id}`,
       {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
+          Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
         },
       }
     );
@@ -76,7 +79,7 @@ export const deleteTransactionAsyn = createAsyncThunk(
   }
 );
 export const editTransactionAsyn = createAsyncThunk(
-  "transactions/editTransactionAsyn",
+  'transactions/editTransactionAsyn',
   async (transaction) => {
     var data = JSON.stringify({
       transaction_key: transaction.id,
@@ -84,38 +87,44 @@ export const editTransactionAsyn = createAsyncThunk(
       type: transaction.type,
       category: transaction.category,
       amount: parseFloat(transaction.amount),
-      currency: "SGD",
-      payment_method: "cash",
+      currency: 'SGD',
+      payment_method: 'cash',
       date_of_transaction: transaction.date,
     });
 
     console.log(`Edit request body: ${data}`);
 
     const requestOptions = {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+        'Content-Type': 'application/json',
       },
       body: data,
     };
-    const resp = await fetch("http://172.21.148.163/api/v1/transaction", requestOptions)
+    const resp = await fetch(
+      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/transaction`,
+      requestOptions
+    );
     if (resp.ok) {
       const editedTransaction = await resp.json();
       return { editedTransaction };
-    } 
+    }
   }
 );
 
 export const getStatisticsAsyn = createAsyncThunk(
-  "transactions/getStatisticsAsyn",
+  'transactions/getStatisticsAsyn',
   async () => {
-    const resp = await fetch("http://172.21.148.163/api/v1/stats", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt_token")}`,
-      },
-    });
+    const resp = await fetch(
+      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/stats`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+        },
+      }
+    );
     if (resp.ok) {
       const stats = await resp.json();
       return { stats };
@@ -125,7 +134,7 @@ export const getStatisticsAsyn = createAsyncThunk(
 
 // Reducer
 export const TransactionSlice = createSlice({
-  name: "transactions",
+  name: 'transactions',
   initialState: transactionInitialState,
   reducers: {},
   extraReducers: {
@@ -134,8 +143,11 @@ export const TransactionSlice = createSlice({
     },
     [addTransactionAsyn.fulfilled]: (state, action) => {
       console.log(action);
-      state.transactions = [...state.transactions, action.payload.newtransaction];
-      toast("Transaction successfully added! ", {
+      state.transactions = [
+        ...state.transactions,
+        action.payload.newtransaction,
+      ];
+      toast('Transaction successfully added! ', {
         autoClose: 750,
       });
     },
@@ -144,7 +156,7 @@ export const TransactionSlice = createSlice({
         (elem) => elem.transaction_key !== action.payload.transaction_id
       );
       state.transactions = filteredata;
-      toast("Transaction successfully deleted!", {
+      toast('Transaction successfully deleted!', {
         autoClose: 750,
       });
     },
@@ -155,13 +167,13 @@ export const TransactionSlice = createSlice({
           action.payload.editedTransaction.transaction_key
       );
       state.transactions[index] = action.payload.editedTransaction;
-      toast("Transaction successfully updated!", {
+      toast('Transaction successfully updated!', {
         autoClose: 750,
       });
     },
     [getStatisticsAsyn.fulfilled]: (state, action) => {
       state.statistics = action.payload.stats;
-    }
+    },
   },
 });
 export const TransactionActions = TransactionSlice.actions;
