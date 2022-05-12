@@ -1,12 +1,7 @@
 //db.js
 const mongoose = require('mongoose');
-require('dotenv').config();
-let dbUri;
 // use mongo atlas db in prod and local mongo on dev
-process.env.NODE_ENV === 'production' ? (dbUri = process.env.MONGO_URL) : null;
-process.env.NODE_ENV === 'development'
-  ? (dbUri = `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`)
-  : null;
+let dbUri = `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/finappsys?authSource=admin`;
 
 let _db;
 
@@ -26,11 +21,7 @@ const initDb = (callback) => {
     .connect(dbUri)
     .then(() => {
       console.log(
-        `connected to ${
-          process.env.NODE_ENV === 'production'
-            ? `Mongo ATLAS at URI ${process.env.MONGO_URL}`
-            : `Local MongoDB at port ${process.env.DATABASE_PORT}`
-        }`
+        `connected to ${`Local MongoDB at port ${process.env.DATABASE_PORT}`}`
       );
       return callback(null, _db);
     })
