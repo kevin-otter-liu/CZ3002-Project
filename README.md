@@ -123,8 +123,15 @@ Install MongoDB
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### Deployment (TBC)
-...
-
+2 methods of deployment
+1. deployment with containers on a single machine (docker-compose)
+   ```sh
+   docker-compose up -d && docker ps -a
+   ```
+2. deployment with kubernetes of a cluster of worker nodes (kubernetes/deployment.yaml)
+  ```sh
+  kubectl apply -f=env.yaml -f=deployment.yaml
+  ```
 <!-- CONTRIBUTING -->
 ## Contributing
 
