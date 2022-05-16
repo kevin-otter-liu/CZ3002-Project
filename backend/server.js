@@ -1,6 +1,7 @@
 'use strict';
-const { program } = require('commander');
 
+const { program } = require('commander');
+require('dotenv').config();
 program
   .version('0.01', '-v --version')
   .option('-p, --production', 'execute in production env')
@@ -22,12 +23,21 @@ const express = require('express');
 const app = express();
 
 // default middelwares
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const db = require('./db');
-
-app.use(cors());
 app.use(bodyParser.json());
+
+// cors
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'POST,GET,OPTIONS,DELETE,PATCH'
+  );
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  next();
+});
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // custom middlewares
@@ -70,6 +80,7 @@ app.use((error, req, res, next) => {
 
 // initialise db, if db error dont start
 const SERVER_PORT = process.env.SERVER_PORT || 5000;
+
 db.initDb((err, db) => {
   if (err) {
     console.log(err);

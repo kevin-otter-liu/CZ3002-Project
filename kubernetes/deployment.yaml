@@ -1,0 +1,245 @@
+# declaring storage class for AWS
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: efs-sc
+provisioner: efs.csi.aws.com
+---
+# persistent volume service using AWS efs for mongodb
+apiVersion: v1
+kind: PersistentVolume
+metadata: 
+  name: mongodb-efs-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  # local testing setup using hostPath
+  storageClassName: standard
+  hostPath:
+    path: /data
+    type: DirectoryOrCreate
+  # storageClassName: efs-sc
+  # csi:
+  #   driver: efs.csi.aws.com
+  #   volumeHandle: (to be filled)
+---
+# persistent volume service using AWS efs for mongodb
+apiVersion: v1
+kind: PersistentVolume
+metadata: 
+  name: backend-efs-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  # local testing setup using hostPath
+  storageClassName: standard
+  hostPath:
+    path: /data
+    type: DirectoryOrCreate
+  # storageClassName: efs-sc
+  # csi:
+  #   driver: efs.csi.aws.com
+  #   volumeHandle: (to be filled)
+---
+# persistent volume claim for backend pod
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backend-efs-pvc
+spec:
+  volumeName: backend-efs-pv
+  accessModes:
+    - ReadWriteMany
+  storageClassName: standard
+  # storageClassName: efs-sc
+  resources:
+    requests:
+      storage: 5Gi
+---
+# persistent volume claim for mongo pod
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-efs-pvc
+spec:
+  volumeName: mongodb-efs-pv
+  accessModes:
+    - ReadWriteMany
+  storageClassName: standard
+  # storageClassName: efs-sc
+  resources:
+    requests:
+      storage: 5Gi
+---
+# Deployment for mongodb pod
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb-container
+          image: mongo:latest
+          volumeMounts:
+            - mountPath: /app/mongodb
+              name: mongodb-volume
+          # to be chhanged
+          env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: FinanceAppServer
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: cryptikPASSWORD
+      volumes:
+        - name: mongodb-volume
+          persistentVolumeClaim:
+            claimName: mongodb-efs-pvc
+---
+# service for mongodb pod
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+spec:
+  selector:
+    app: mongodb
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+--- 
+# deployment of pod for backend
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-api-container
+          image: kevindevelopes/finappsys-backend:latest
+          volumeMounts:
+            - mountPath: /app/backend
+              name: backend-volume
+          # env variables to inject into pod
+          env:
+            - name: SERVER_PORT
+              valueFrom: 
+                configMapKeyRef:
+                  name: data-store-env
+                  key: SERVER_PORT
+            - name: DATABASE_USER
+              valueFrom: 
+                configMapKeyRef:
+                  name: data-store-env
+                  key: DATABASE_USER
+            - name: DATABASE_PASSWORD
+              valueFrom: 
+                configMapKeyRef:
+                  name: data-store-env
+                  key: DATABASE_PASSWORD
+            - name: DATABASE_HOST
+              valueFrom: 
+                configMapKeyRef:
+                  name: data-store-env
+                  key: DATABASE_HOST
+            - name: DATABASE_PORT
+              valueFrom: 
+                configMapKeyRef:
+                  name: data-store-env
+                  key: DATABASE_PORT
+            - name: DATABASE_NAME
+              valueFrom: 
+                configMapKeyRef:
+                  name: data-store-env
+                  key: DATABASE_NAME
+            - name: SERVER_AUTH_SECRET
+              valueFrom: 
+                configMapKeyRef:
+                  name: data-store-env
+                  key: SERVER_AUTH_SECRET
+            - name: email
+              valueFrom: 
+                configMapKeyRef:
+                  name: data-store-env
+                  key: email
+            - name: mailer_password
+              valueFrom: 
+                configMapKeyRef:
+                  name: data-store-env
+                  key: mailer_password
+      volumes:
+        - name: backend-volume
+          persistentVolumeClaim:
+            claimName: backend-efs-pvc
+---
+# service for backend pod
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+---
+# Deployment for frontend pod
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-api-container
+          image: kevindevelopes/finappsys-frontend:latest
+---
+# service for frontend pod
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: frontend
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+

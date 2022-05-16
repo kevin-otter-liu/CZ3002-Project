@@ -15,15 +15,12 @@ const budgetInitialState = {
 export const getBudgetsAsyn = createAsyncThunk(
   'budgets/getBudgetsAsyn',
   async () => {
-    const resp = await fetch(
-      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/budget`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
-        },
-      }
-    );
+    const resp = await fetch(`/api/v1/budget`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+      },
+    });
     if (resp.ok) {
       const budgets = await resp.json();
       return { budgets };
@@ -49,10 +46,7 @@ export const addBudgetAsyn = createAsyncThunk(
       },
       body: data,
     };
-    const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/budget`,
-      requestOptions
-    );
+    const response = await fetch(`/api/v1/budget`, requestOptions);
 
     // const newbudget = await response.json();
     if (response.ok) {
@@ -70,17 +64,14 @@ export const deleteBudgetAsyn = createAsyncThunk(
 
     console.log(`Delete request body: ${data}`);
 
-    const resp = await fetch(
-      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/budget`,
-      {
-        method: 'delete',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
-          'Content-Type': 'application/json',
-        },
-        body: data,
-      }
-    );
+    const resp = await fetch(`/api/v1/budget`, {
+      method: 'delete',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+        'Content-Type': 'application/json',
+      },
+      body: data,
+    });
     console.log(resp);
     if (resp.ok) {
       // const budget = resp.json();
@@ -114,10 +105,7 @@ export const editBudgetAsyn = createAsyncThunk(
       },
       body: data,
     };
-    const resp = await fetch(
-      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/budget`,
-      requestOptions
-    );
+    const resp = await fetch(`/api/v1/budget`, requestOptions);
     if (resp.ok) {
       const editedbudget = await resp.json();
       return { editedbudget };

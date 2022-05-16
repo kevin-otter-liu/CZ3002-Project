@@ -1,5 +1,6 @@
 //db.js
 const mongoose = require('mongoose');
+require('dotenv').config();
 // use mongo atlas db in prod and local mongo on dev
 let dbUri = `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/finappsys?authSource=admin`;
 
