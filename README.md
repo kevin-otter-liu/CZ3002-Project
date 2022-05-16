@@ -122,7 +122,7 @@ Install MongoDB
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-### Deployment (TBC)
+### Deployment
 2 methods of deployment
 1. deployment with containers on a single machine (docker-compose)
    ```sh
