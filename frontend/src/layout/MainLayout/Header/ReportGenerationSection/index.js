@@ -11,15 +11,12 @@ toast.configure();
 const ReportGenerationSection = () => {
   const theme = useTheme();
   const handleGenerateReport = async () => {
-    const resp = await fetch(
-      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/report`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
-        },
-      }
-    );
+    const resp = await fetch(`/api/v1/report`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+      },
+    });
     if (resp.ok) {
       toast('Your spending report has been generated and sent to your email!', {
         autoClose: 750,

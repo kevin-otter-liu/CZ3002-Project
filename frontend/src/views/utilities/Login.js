@@ -14,7 +14,7 @@ import { ConsoleView } from 'react-device-detect';
 import { ErrorRounded } from '@mui/icons-material';
 
 const axios = ax.create({
-  baseURL: 'https:',
+  baseURL: 'http:',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -60,7 +60,7 @@ const LoginPage = () => {
 
   const signInHandler = async (emailInput, passwordInput) => {
     await axios
-      .post(`${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/auth/sign-in`, {
+      .post(`/api/v1/auth/sign-in`, {
         email: emailInput,
         password: passwordInput,
       })
@@ -94,13 +94,10 @@ const LoginPage = () => {
 
   const signUpHandler = async (emailInput, passwordInput) => {
     try {
-      let response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/auth/sign-up`,
-        {
-          email: emailInput,
-          password: passwordInput,
-        }
-      );
+      let response = await axios.post(`/api/v1/auth/sign-up`, {
+        email: emailInput,
+        password: passwordInput,
+      });
 
       dispatch(AuthenticationActions.login());
       toast('Account successfully created! Directing to the main page ... ', {

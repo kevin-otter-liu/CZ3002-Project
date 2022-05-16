@@ -15,15 +15,12 @@ const transactionInitialState = {
 export const getTransactionsAsyn = createAsyncThunk(
   'transactions/getTransactionsAsyn',
   async () => {
-    const resp = await fetch(
-      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/transaction`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
-        },
-      }
-    );
+    const resp = await fetch(`/api/v1/transaction`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+      },
+    });
     if (resp.ok) {
       const transactions = await resp.json();
       return { transactions };
@@ -51,10 +48,7 @@ export const addTransactionAsyn = createAsyncThunk(
       },
       body: data,
     };
-    const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/transaction`,
-      requestOptions
-    );
+    const response = await fetch(`/api/v1/transaction`, requestOptions);
 
     const newtransaction = await response.json();
     return { newtransaction };
@@ -63,15 +57,12 @@ export const addTransactionAsyn = createAsyncThunk(
 export const deleteTransactionAsyn = createAsyncThunk(
   'transactions/deleteTransactionAsyn',
   async (transaction_id) => {
-    const resp = await fetch(
-      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/transaction/${transaction_id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
-        },
-      }
-    );
+    const resp = await fetch(`/api/v1/transaction/${transaction_id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+      },
+    });
     if (resp.ok) {
       // const transaction = resp.json();
       return { transaction_id };
@@ -102,10 +93,7 @@ export const editTransactionAsyn = createAsyncThunk(
       },
       body: data,
     };
-    const resp = await fetch(
-      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/transaction`,
-      requestOptions
-    );
+    const resp = await fetch(`/api/v1/transaction`, requestOptions);
     if (resp.ok) {
       const editedTransaction = await resp.json();
       return { editedTransaction };
@@ -116,15 +104,12 @@ export const editTransactionAsyn = createAsyncThunk(
 export const getStatisticsAsyn = createAsyncThunk(
   'transactions/getStatisticsAsyn',
   async () => {
-    const resp = await fetch(
-      `${process.env.REACT_APP_BACKEND_SERVER_IP}/api/v1/stats`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
-        },
-      }
-    );
+    const resp = await fetch(`/api/v1/stats`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt_token')}`,
+      },
+    });
     if (resp.ok) {
       const stats = await resp.json();
       return { stats };
