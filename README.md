@@ -126,10 +126,37 @@ Install MongoDB
 2 methods of deployment
 1. deployment with containers on a single machine (docker-compose)
    ```sh
+   # install latest docker with curl installation script
+   curl -sSL https://get.docker.com/ | sh
+   # add a docker group to system
+   sudo groupadd docker
+   # add user to docker group
+   sudo usermod -aG docker $USER
+   # refresh the docker group
+   newgrp docker 
+   # verify docker can run using
+   docker run hello-world
+   # delete all dangling images
+   docker image prune
+   
+   # login to your docker account
+   docker login
+   
+   
+   #install docker compose
+   sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+   sudo chmod +x /usr/local/bin/docker-compose
+   sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+   docker-compose --version
+   
+   # go into the project folder where docker-compose.yaml is located and execute
+   # rmbr to include the env files
    docker-compose up -d && docker ps -a
    ```
 2. deployment with kubernetes of a cluster of worker nodes (kubernetes/deployment.yaml)
   ```sh
+  # install kubectl
+  # go into kubernetes/
   kubectl apply -f=env.yaml -f=deployment.yaml
   ```
 <!-- CONTRIBUTING -->
