@@ -30,7 +30,9 @@ services:
       - backend
     volumes: 
       - ./certbot/www:/var/www/certbot/:ro
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
     container_name: frontend-container
+    restart: always
   certbot:
     image: certbot/certbot:latest
     volumes:
