@@ -19,6 +19,7 @@ services:
     depends_on:
       - mongodb
     container_name: backend-container
+    restart: unless-stopped
   frontend:
     build: ./frontend
     env_file:
