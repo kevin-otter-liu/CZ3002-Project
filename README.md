@@ -49,7 +49,7 @@ Watch the Youtube Video here:
 [![Watch the Video](https://img.youtube.com/vi/iG0Q7lon6Vk/maxresdefault.jpg)](https://www.youtube.com/watch?v=iG0Q7lon6Vk)
 
 # Network Architecture (docker-compose deployment method)
-![Network Architecture](./assets/docker-compose-network.jpg?raw=true "Network Architecture")
+<img src="https://github.com/kevin-otter-liu/CZ3002-Project/blob/main/assets/docker-compose-network.jpg" width="100%" height="700">
 
 <!-- TABLE OF CONTENTS -->
 <details>
