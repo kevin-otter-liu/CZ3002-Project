@@ -29,14 +29,17 @@ services:
     depends_on:
       - backend
     volumes: 
-      - ./certbot/www:/var/www/certbot/:ro
-      - ./certbot/conf/:/etc/nginx/ssl/:ro
-      - ./conf/:/etc/nginx/conf.d/:ro
+      - ./data/nginx:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
     container_name: frontend-container
-    restart: always
+    restart: unless-stopped
   certbot:
     image: certbot/certbot:latest
+    restart: unless-stopped
     volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 volumes:
   data:
