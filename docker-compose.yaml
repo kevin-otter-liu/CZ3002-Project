@@ -1,6 +1,7 @@
 version: "3.9"
 services:
   mongodb:
+    container_name: mongodb-container
     image: mongo:latest
     volumes:
       - data:/data/db
@@ -8,9 +9,8 @@ services:
       - ./env/mongodb.env
     ports:
       - '27017:27017'
-    container_name: mongodb-container
-    #networks:
   backend:
+    container_name: backend-container
     build: ./backend
     ports:
       - '5000:5000'
@@ -18,16 +18,40 @@ services:
       - ./env/backend.env
     depends_on:
       - mongodb
-    container_name: backend-container
+    restart: unless-stopped
   frontend:
+    container_name: frontend-container
     build: ./frontend
     env_file:
       - ./env/frontend.env
     ports:
-      - '80:80'
+      - '3000:3000'
     depends_on:
       - backend
-    container_name: frontend-container
-
+    restart: unless-stopped
+  # api gateway for web apigateway -> frontend server
+  apigateway: 
+    container_name: apigateway-container
+    image: nginx:stable
+    restart: unless-stopped
+    volumes: 
+      - ./data/nginx:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    depends_on:
+      - frontend
+      - backend
+      - mongodb
+  certbot:
+    image: certbot/certbot:latest
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 volumes:
   data:

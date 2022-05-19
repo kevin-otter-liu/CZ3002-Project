@@ -14,7 +14,7 @@ import { ConsoleView } from 'react-device-detect';
 import { ErrorRounded } from '@mui/icons-material';
 
 const axios = ax.create({
-  baseURL: 'http:',
+  baseURL: 'https:',
   headers: {
     'Content-Type': 'application/json',
   },
