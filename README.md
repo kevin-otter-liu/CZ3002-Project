@@ -152,9 +152,19 @@ Install MongoDB
    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
    docker-compose --version
    
-   # go into the project folder where docker-compose.yaml is located and execute
    # rmbr to include the env files
-   docker-compose up -d && docker ps -a
+   #run init script to mount ssl certificates into apigateway container && start up all containers
+   sudo chmod +x init-letsencryptscript.sh
+   ./init-letsencryptscript.sh
+   # this script creates all necessart certs and keys for SSL in the host machine if it doesnt exist and mount them into the apigateway container using docker bind mounts.
+   # if certs and keys does exist it will just start all the containers
+   
+   # check if processes are ok
+   docker ps -a
+   docker logs <container_name>
+   
+   # to build containers and update containers run in the project folder where docker-compose.yaml is located and execute
+   docker-compose up -d --build && docker ps -a
    ```
 2. deployment with kubernetes of a cluster of worker nodes (kubernetes/deployment.yaml)
   ```sh
