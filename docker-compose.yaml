@@ -31,6 +31,7 @@ services:
     restart: unless-stopped
   # api gateway for web apigateway -> frontend server
   apigateway: 
+    container_name: apigateway-container
     image: nginx:stable
     restart: unless-stopped
     volumes: 
