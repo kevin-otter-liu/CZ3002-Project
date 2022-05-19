@@ -7,7 +7,7 @@ fi
 
 domains=(bigottercodes.com www.bigottercodes.com)
 rsa_key_size=4096
-data_path="./frontend/data/certbot"
+data_path="./data/certbot"
 email="kevinliusingapore@gmail.com" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
@@ -38,8 +38,8 @@ docker-compose run --rm --entrypoint "\
 echo
 
 
-echo "### Starting nginx ..."
-docker-compose up --force-recreate -d nginx
+echo "### Starting nginx in apigateway container ..."
+docker-compose up --force-recreate -d apigateway
 echo
 
 echo "### Deleting dummy certificate for $domains ..."
@@ -76,5 +76,5 @@ docker-compose run --rm --entrypoint "\
     --force-renewal" certbot
 echo
 
-echo "### Reloading nginx ..."
-docker-compose exec nginx nginx -s reload
+echo "### Reloading nginx in apigateway container..."
+docker-compose exec apigateway nginx -s reload
